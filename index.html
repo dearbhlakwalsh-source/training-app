@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sub-50 Training App</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+
+:root {
+  --bg:#0D0D0D; --card:#161616; --card2:#1E1E1E; --border:#252525; --border2:#2E2E2E;
+  --text:#F0EDE8; --muted:#888880; --faint:#444440;
+  --green:#2ECC8A; --green-bg:#0D2B1C; --green-dim:#1A3D28;
+  --amber:#E8A844; --amber-bg:#2A1E08; --amber-dim:#3A2A0A;
+  --blue:#4A9EE8; --blue-bg:#0A1E38; --blue-dim:#0E2848;
+  --coral:#E86A44; --coral-bg:#2A1208; --coral-dim:#3A1A0A;
+  --purple:#9B7FE8; --purple-bg:#1A1430; --purple-dim:#221840;
+  --teal:#44C8A8; --teal-bg:#082820; --teal-dim:#0E3028;
+  --red:#E84444; --red-bg:#2A0808;
+  --pink:#E84488; --pink-bg:#2A0818;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);font-size:14px;display:flex;flex-direction:column;}
+
+/* ── Nav bar ── */
+.nav{display:flex;background:var(--card);border-bottom:1px solid var(--border);overflow-x:auto;flex-shrink:0;scrollbar-width:none;}
+.nav::-webkit-scrollbar{display:none;}
+.nav-btn{flex-shrink:0;padding:14px 20px;font-size:13px;font-weight:500;font-family:inherit;background:none;border:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;}
+.nav-btn.active{color:var(--text);border-bottom-color:var(--green);}
+.nav-btn:hover:not(.active){color:var(--text);}
+
+/* ── Main scroll area ── */
+.main{flex:1;overflow-y:auto;padding:20px;scrollbar-width:thin;scrollbar-color:var(--border2) transparent;}
+.section{display:none;}
+.section.active{display:block;}
+
+/* ── Cards ── */
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px 20px;margin-bottom:12px;}
+.card-sm{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:8px;}
+.card-h{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
+.card-title{font-size:14px;font-weight:600;color:var(--text);}
+.card-sub{font-size:12px;color:var(--muted);margin-top:2px;}
+
+/* ── Header band ── */
+.header-band{background:var(--card2);border:1px solid var(--border2);border-radius:14px;padding:20px;margin-bottom:14px;}
+
+/* ── Pills / badges ── */
+.pill{display:inline-block;font-size:11px;font-weight:600;padding:3px 9px;border-radius:6px;letter-spacing:.02em;}
+.pill-easy{background:var(--green-bg);border:1px solid var(--green);color:var(--green);}
+.pill-long{background:var(--purple-bg);border:1px solid var(--purple);color:var(--purple);}
+.pill-tempo{background:var(--blue-bg);border:1px solid var(--blue);color:var(--blue);}
+.pill-intv{background:var(--amber-bg);border:1px solid var(--amber);color:var(--amber);}
+.pill-race{background:var(--coral-bg);border:1px solid var(--coral);color:var(--coral);}
+.pill-gym{background:var(--teal-bg);border:1px solid var(--teal);color:var(--teal);}
+.pill-rest{background:var(--border);border:1px solid var(--border2);color:var(--muted);}
+.badge{display:inline-block;font-size:10px;font-weight:600;padding:2px 7px;border-radius:10px;}
+
+/* ── Checkboxes ── */
+.cb-row{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);}
+.cb-row:last-child{border-bottom:none;}
+.cb-row input[type=checkbox]{width:16px;height:16px;flex-shrink:0;margin-top:1px;accent-color:var(--green);cursor:pointer;}
+.cb-row label{cursor:pointer;flex:1;line-height:1.5;}
+.cb-row.done label{text-decoration:line-through;color:var(--muted);}
+.cb-row .cb-detail{display:block;font-size:11px;color:var(--faint);margin-top:1px;line-height:1.4;}
+.cb-badge{font-size:10px;font-weight:600;padding:2px 7px;border-radius:8px;white-space:nowrap;flex-shrink:0;margin-top:1px;}
+
+/* ── Progress bar ── */
+.pbar-wrap{height:6px;background:var(--border2);border-radius:3px;overflow:hidden;}
+.pbar-fill{height:100%;border-radius:3px;transition:width .5s;}
+
+/* ── Stat grid ── */
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;margin-bottom:14px;}
+.stat-card{background:var(--card2);border-radius:10px;padding:12px 14px;}
+.stat-val{font-size:22px;font-weight:700;line-height:1;margin-bottom:3px;}
+.stat-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;}
+
+/* ── Week grid ── */
+.week-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:14px;}
+.day-cell{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:10px 8px;cursor:pointer;transition:border-color .15s;}
+.day-cell:hover{border-color:var(--border2);}
+.day-cell.today{border-color:var(--green);}
+.day-cell.done-cell{background:var(--green-dim);}
+.day-name-sm{font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px;}
+.day-session{font-size:11px;font-weight:500;line-height:1.3;}
+
+/* ── Full plan table ── */
+.plan-week-row{background:var(--card);border:1px solid var(--border);border-radius:10px;margin-bottom:6px;overflow:hidden;}
+.plan-week-header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;cursor:pointer;gap:8px;}
+.plan-week-header:hover{background:var(--card2);}
+.plan-week-body{padding:12px 14px;border-top:1px solid var(--border);display:none;}
+.plan-week-body.open{display:block;}
+.plan-days-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:10px;}
+.plan-day{background:var(--card2);border-radius:7px;padding:8px 6px;}
+.plan-day-name{font-size:9px;font-weight:600;color:var(--faint);text-transform:uppercase;margin-bottom:4px;}
+
+/* ── Textarea ── */
+textarea{width:100%;background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);resize:vertical;min-height:56px;line-height:1.5;}
+textarea:focus{outline:none;border-color:var(--green);}
+textarea::placeholder{color:var(--faint);}
+
+/* ── Buttons ── */
+.btn{padding:8px 16px;border-radius:8px;border:1px solid var(--border2);font-family:inherit;font-size:13px;font-weight:500;cursor:pointer;background:var(--card2);color:var(--text);transition:all .15s;}
+.btn:hover{border-color:var(--green);color:var(--green);}
+.btn-green{background:var(--green);color:#060E09;border-color:var(--green);}
+.btn-green:hover{background:#3DE89C;border-color:#3DE89C;color:#060E09;}
+.btn-sm{padding:5px 11px;font-size:11px;border-radius:6px;}
+
+/* ── Alert ── */
+.alert{border-left:2px solid var(--red);background:var(--red-bg);border-radius:0 8px 8px 0;padding:10px 14px;font-size:13px;color:#E88888;line-height:1.6;margin-bottom:10px;}
+
+/* ── Section heading ── */
+.sec-h{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:10px;margin-top:20px;}
+.sec-h:first-child{margin-top:0;}
+
+/* ── Meal card ── */
+.meal-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
+@media(max-width:520px){.meal-grid{grid-template-columns:1fr;}}
+.meal-card{background:var(--card2);border-radius:10px;padding:12px 14px;}
+.meal-label{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;}
+.meal-text{font-size:13px;line-height:1.6;color:var(--text);}
+.meal-macros{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px;}
+.macro-chip{font-size:10px;background:var(--border);color:var(--muted);padding:2px 7px;border-radius:5px;}
+.carb-swap{font-size:11px;color:var(--blue);background:var(--blue-bg);border-radius:5px;padding:4px 8px;margin-top:6px;display:inline-block;}
+.whey-tag{font-size:10px;font-weight:600;background:var(--pink-bg);color:var(--pink);padding:2px 7px;border-radius:5px;margin-left:3px;}
+
+/* ── Injury badge colours ── */
+.cb-ankle{background:var(--amber-bg);color:var(--amber);}
+.cb-knee{background:var(--blue-bg);color:var(--blue);}
+.cb-both{background:var(--purple-bg);color:var(--purple);}
+
+/* ── Streak dots ── */
+.streak-dots{display:flex;gap:4px;flex-wrap:wrap;}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--border2);}
+.dot.filled{background:var(--green);}
+
+/* ── Weight chart ── */
+.weight-entries{display:flex;flex-direction:column;gap:4px;max-height:200px;overflow-y:auto;}
+.weight-entry{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;background:var(--card2);border-radius:7px;font-size:13px;}
+.weight-del{background:none;border:none;color:var(--faint);cursor:pointer;font-size:14px;padding:0 4px;}
+.weight-del:hover{color:var(--red);}
+
+/* ── Race countdown ── */
+.race-banner{background:linear-gradient(135deg,var(--coral-bg),var(--amber-bg));border:1px solid var(--coral);border-radius:14px;padding:20px;margin-bottom:14px;text-align:center;}
+
+/* ── Phase indicator ── */
+.phase-tag{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;}
+
+/* ── Responsive ── */
+@media(max-width:600px){
+  .week-grid{grid-template-columns:repeat(7,1fr);gap:3px;}
+  .day-cell{padding:7px 4px;}
+  .main{padding:12px;}
+  .meal-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <button class="nav-btn active" onclick="nav('today')">Today</button>
+  <button class="nav-btn" onclick="nav('week')">This week</button>
+  <button class="nav-btn" onclick="nav('plan')">Full plan</button>
+  <button class="nav-btn" onclick="nav('diet')">Diet</button>
+  <button class="nav-btn" onclick="nav('injury')">Injury</button>
+  <button class="nav-btn" onclick="nav('progress')">Progress</button>
+</nav>
+
+<div class="main">
+
+<!-- ════════════════ TODAY ════════════════ -->
+<div class="section active" id="sec-today"></div>
+
+<!-- ════════════════ THIS WEEK ════════════════ -->
+<div class="section" id="sec-week"></div>
+
+<!-- ════════════════ FULL PLAN ════════════════ -->
+<div class="section" id="sec-plan"></div>
+
+<!-- ════════════════ DIET ════════════════ -->
+<div class="section" id="sec-diet"></div>
+
+<!-- ════════════════ INJURY ════════════════ -->
+<div class="section" id="sec-injury"></div>
+
+<!-- ════════════════ PROGRESS ════════════════ -->
+<div class="section" id="sec-progress"></div>
+
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════════════════════
+const PLAN_START = new Date('2026-03-23');
+const RACE_DATE  = new Date('2026-09-06');
+const DAY_NAMES  = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const DAY_FULL   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const CTX        = ['WFH 9–5:30','Office/gym 7:30pm','WFH (free am)','Office/gym 7:30pm','WFH 9–5:30','Free','Rest day'];
+
+const PHASES = [
+  {id:1,name:'Base',color:'#44C8A8',dim:'#0A2820',weeks:[1,6]},
+  {id:2,name:'Build',color:'#4A9EE8',dim:'#0A1E38',weeks:[7,13]},
+  {id:3,name:'Peak',color:'#E8A844',dim:'#2A1E08',weeks:[14,20]},
+  {id:4,name:'Taper',color:'#E86A44',dim:'#2A1208',weeks:[21,24]},
+];
+
+function getPhase(wk){return PHASES.find(p=>wk>=p.weeks[0]&&wk<=p.weeks[1])||PHASES[0];}
+
+// [Mon,Tue,Wed,Thu,Fri,Sat,Sun] for each week
+const WEEKS=[
+  {wk:1,dates:'23–29 Mar',vol:'~14mi',rec:false,days:[
+    {t:'easy',d:'2.5mi easy — ankle check'},
+    {t:'gym',gym:'Squat or bench',d:'7:30pm'},
+    {t:'gym',gym:'Hinge',d:'Morning'},
+    {t:'gym',gym:'Bench or squat',d:'7:30pm'},
+    {t:'easy',d:'3mi easy'},
+    {t:'long',d:'5mi easy'},
+    {t:'rest',d:''}]},
+  {wk:2,dates:'30 Mar–5 Apr',vol:'~16mi',rec:false,days:[
+    {t:'easy',d:'3mi easy'},
+    {t:'gym',gym:'Squat or bench',d:'7:30pm'},
+    {t:'gym',gym:'Hinge',d:'Morning'},
+    {t:'gym',gym:'Bench or squat',d:'7:30pm'},
+    {t:'easy',d:'3.5mi easy'},
+    {t:'long',d:'6mi easy'},
+    {t:'rest',d:''}]},
+  {wk:3,dates:'6–12 Apr',vol:'~17mi',rec:false,days:[
+    {t:'easy',d:'3mi + 4×100m strides'},
+    {t:'gym',gym:'Squat or bench',d:'7:30pm'},
+    {t:'gym',gym:'Hinge',d:'Morning'},
+    {t:'gym',gym:'Bench or squat',d:'7:30pm'},
+    {t:'easy',d:'3.5mi easy'},
+    {t:'long',d:'7mi easy'},
+    {t:'rest',d:''}]},
+  {wk:4,dates:'13–19 Apr',vol:'~13mi',rec:true,days:[
+    {t:'easy',d:'2.5mi easy'},
+    {t:'gym',gym:'Squat or bench',d:'7:30pm'},
+    {t:'gym',gym:'Hinge',d:'Morning'},
+    {t:'gym',gym:'Bench or squat',d:'7:30pm'},
+    {t:'easy',d:'3mi easy'},
+    {t:'long',d:'5.5mi easy'},
+    {t:'rest',d:''}]},
+  {wk:5,dates:'20–26 Apr',vol:'~19mi',rec:false,days:[
+    {t:'easy',d:'3.5mi easy'},
+    {t:'gym',gym:'Squat or bench',d:'7:30pm'},
+    {t:'gym',gym:'Hinge',d:'Morning'},
+    {t:'gym',gym:'Bench or squat',d:'7:30pm'},
+    {t:'tempo',d:'4.5mi: 1.5 WU, 2mi @ 8:35, 1 CD'},
+    {t:'long',d:'8mi easy'},
+    {t:'rest',d:''}]},
+  {wk:6,dates:'27 Apr–3 May',vol:'~15mi',rec:true,days:[
+    {t:'easy',d:'3mi easy'},
+    {t:'gym',gym:'Squat or bench',d:'7:30pm'},
+    {t:'gym',gym:'Hinge',d:'Morning'},
+    {t:'gym',gym:'Bench or squat',d:'7:30pm'},
+    {t:'tempo',d:'4mi: 1 WU, 1.5mi tempo, 2.5 CD'},
+    {t:'long',d:'6mi easy'},
+    {t:'rest',d:''}]},
+  {wk:7,dates:'4–10 May',vol:'~21mi',rec:false,days:[
+    {t:'easy',d:'3.5mi easy'},
+    {t:'gym',gym:'Squat or bench',d:'7:30pm'},
+    {t:'gym',gym:'Hinge',d:'Morning'},
+    {t:'gym',gym:'Bench or squat',d:'7:30pm'},
+    {t:'tempo',d:'4.5mi: 1 WU, 2.5mi @ 8:20, 1 CD'},
+    {t:'intv',d:'6×0.4mi @ 7:45, 90s jog'},
+    {t:'long',d:'9mi easy'}]},
+  {wk:8,dates:'11–17 May',vol:'~22mi',rec:false,days:[
+    {t:'easy',d:'3.5mi easy'},
+    {t:'gym',gym:'Squat or bench',d:'7:30pm'},
+    {t:'gym',gym:'Hinge',d:'Morning'},
+    {t:'gym',gym:'Bench or squat',d:'7:30pm'},
+    {t:'tempo',d:'5mi: 1.5 WU, 2.5mi @ 8:20, 1 CD'},
+    {t:'intv',d:'5×0.5mi @ 7:45, 2min rec'},
+    {t:'long',d:'9.5mi easy'}]},
+  {wk:9,dates:'18–24 May',vol:'~23mi',rec:false,days:[
+    {t:'easy',d:'4mi easy'},
+    {t:'gym',gym:'Squat or bench',d:'7:30pm'},
+    {t:'gym',gym:'Hinge',d:'Morning'},
+    {t:'gym',gym:'Bench or squat',d:'7:30pm'},
+    {t:'tempo',d:'5mi: 1.5 WU, 3mi @ 8:20, 0.5 CD'},
+    {t:'intv',d:'4×0.6mi @ 7:45, 2min rec'},
+    {t:'long',d:'10mi easy'}]},
+  {wk:10,dates:'25–31 May',vol:'~17mi',rec:true,days:[
+    {t:'easy',d:'3mi easy'},
+    {t:'gym',gym:'Squat or bench',d:'7:30pm'},
+    {t:'gym',gym:'Hinge',d:'Morning'},
+    {t:'gym',gym:'Bench or squat',d:'7:30pm'},
+    {t:'easy',d:'3.5mi easy'},
+    {t:'intv',d:'5×0.4mi relaxed'},
+    {t:'long',d:'7mi easy'}]},
+  {wk:11,dates:'1–7 Jun',vol:'~24mi',rec:false,days:[
+    {t:'easy',d:'4mi easy'},
+    {t:'gym',gym:'Squat or bench',d:'7:30pm'},
+    {t:'gym',gym:'Hinge',d:'Morning'},
+    {t:'gym',gym:'Bench or squat',d:'7:30pm'},
+    {t:'tempo',d:'5.5mi: 1.5 WU, 3mi @ 8:10, 1 CD'},
+    {t:'intv',d:'6×0.5mi @ 7:45'},
+    {t:'long',d:'10.5mi easy'}]},
+  {wk:12,dates:'8–14 Jun',vol:'~24mi',rec:false,days:[
+    {t:'easy',d:'4mi easy'},
+    {t:'gym',gym:'Squat or bench',d:'7:30pm'},
+    {t:'gym',gym:'Hinge',d:'Morning'},
+    {t:'gym',gym:'Bench or squat',d:'7:30pm'},
+    {t:'tempo',d:'5.5mi: 1.5 WU, 3mi @ 8:10, 1 CD'},
+    {t:'intv',d:'3×1.25mi @ 7:55, 3min rec'},
+    {t:'long',d:'11mi easy'}]},
+  {wk:13,dates:'15–21 Jun',vol:'~17mi',rec:true,days:[
+    {t:'easy',d:'3mi easy'},
+    {t:'gym',gym:'Squat or bench',d:'7:30pm'},
+    {t:'gym',gym:'Hinge',d:'Morning'},
+    {t:'gym',gym:'Bench or squat',d:'7:30pm'},
+    {t:'easy',d:'3.5mi easy'},
+    {t:'intv',d:'4×0.5mi comfortable'},
+    {t:'long',d:'7.5mi easy'}]},
+  {wk:14,dates:'22–28 Jun',vol:'~25mi',rec:false,days:[
+    {t:'easy',d:'4mi easy'},
+    {t:'gym',gym:'Squat or bench',d:'7:30pm'},
+    {t:'gym',gym:'Hinge',d:'Morning'},
+    {t:'gym',gym:'Bench or squat',d:'7:30pm'},
+    {t:'tempo',d:'6mi: 1.5 WU, 3.5mi @ 8:10, 1 CD'},
+    {t:'intv',d:'8×0.4mi @ 7:40, 90s rec'},
+    {t:'long',d:'10.5mi easy'}]},
+  {wk:15,dates:'29 Jun–5 Jul',vol:'~26mi',rec:false,days:[
+    {t:'easy',d:'4mi easy'},
+    {t:'gym',gym:'Squat or bench',d:'7:30pm'},
+    {t:'gym',gym:'Hinge',d:'Morning'},
+    {t:'gym',gym:'Bench or squat',d:'7:30pm'},
+    {t:'tempo',d:'6mi incl. 2mi @ race pace (8:03)'},
+    {t:'intv',d:'5×0.6mi @ 7:45, 2min rec'},
+    {t:'long',d:'11mi easy'}]},
+  {wk:16,dates:'6–12 Jul',vol:'~18mi',rec:true,days:[
+    {t:'easy',d:'3mi easy'},
+    {t:'gym',gym:'Squat or bench',d:'7:30pm'},
+    {t:'gym',gym:'Hinge',d:'Morning'},
+    {t:'gym',gym:'Bench or squat',d:'7:30pm'},
+    {t:'easy',d:'3.5mi easy'},
+    {t:'intv',d:'4×0.5mi comfortable'},
+    {t:'long',d:'8mi easy'}]},
+  {wk:17,dates:'13–19 Jul',vol:'~26mi',rec:false,days:[
+    {t:'easy',d:'4mi easy'},
+    {t:'gym',gym:'Squat or bench',d:'7:30pm'},
+    {t:'gym',gym:'Hinge',d:'Morning'},
+    {t:'gym',gym:'Bench or squat',d:'7:30pm'},
+    {t:'tempo',d:'6.5mi incl. 3mi @ race pace'},
+    {t:'intv',d:'2×(4×0.4mi) @ 7:40, 60s/3min'},
+    {t:'long',d:'11mi, last 2mi @ race pace'}]},
+  {wk:18,dates:'20–26 Jul',vol:'~20mi+race',rec:false,days:[
+    {t:'easy',d:'3.5mi easy'},
+    {t:'gym',gym:'Squat or bench',d:'7:30pm'},
+    {t:'gym',gym:'Hinge',d:'Morning'},
+    {t:'gym',gym:'Bench or squat',d:'7:30pm'},
+    {t:'rest',d:'Rest — pre-race'},
+    {t:'race',d:'5k target ~24:30 or 10k sub-51'},
+    {t:'easy',d:'3mi easy recovery'}]},
+  {wk:19,dates:'27 Jul–2 Aug',vol:'~26mi',rec:false,days:[
+    {t:'easy',d:'4mi easy'},
+    {t:'gym',gym:'Squat or bench',d:'7:30pm'},
+    {t:'gym',gym:'Hinge',d:'Morning'},
+    {t:'gym',gym:'Bench or squat',d:'7:30pm'},
+    {t:'tempo',d:'7mi: 1.5 WU, 4mi @ 8:05, 1.5 CD'},
+    {t:'intv',d:'4×0.6mi @ 7:40, 2min rec'},
+    {t:'long',d:'11mi, last 3mi @ race pace'}]},
+  {wk:20,dates:'3–9 Aug',vol:'~18mi',rec:true,days:[
+    {t:'easy',d:'3mi easy'},
+    {t:'gym',gym:'Squat or bench',d:'7:30pm'},
+    {t:'gym',gym:'Hinge',d:'Morning'},
+    {t:'gym',gym:'Bench or squat',d:'7:30pm'},
+    {t:'easy',d:'3.5mi easy'},
+    {t:'intv',d:'4×0.5mi comfortable'},
+    {t:'long',d:'9mi easy'}]},
+  {wk:21,dates:'10–16 Aug',vol:'~21mi',rec:false,days:[
+    {t:'easy',d:'3.5mi easy'},
+    {t:'gym',gym:'Squat or bench',d:'7:30pm'},
+    {t:'gym',gym:'Hinge',d:'Morning'},
+    {t:'gym',gym:'Bench or squat',d:'7:30pm'},
+    {t:'tempo',d:'5.5mi: 1.5 WU, 3mi tempo, 1 CD'},
+    {t:'intv',d:'5×0.5mi @ 7:45'},
+    {t:'long',d:'9mi easy'}]},
+  {wk:22,dates:'17–23 Aug',vol:'~17mi',rec:false,days:[
+    {t:'easy',d:'3mi easy'},
+    {t:'gym',gym:'Squat or bench',d:'7:30pm'},
+    {t:'gym',gym:'Hinge',d:'Morning'},
+    {t:'gym',gym:'Bench or squat',d:'7:30pm'},
+    {t:'tempo',d:'4.5mi: 1.5 WU, 2mi tempo, 1 CD'},
+    {t:'intv',d:'4×0.5mi @ 7:45'},
+    {t:'long',d:'7.5mi easy'}]},
+  {wk:23,dates:'24–30 Aug',vol:'~13mi',rec:false,days:[
+    {t:'easy',d:'2.5mi easy'},
+    {t:'gym',gym:'Squat or bench',d:'7:30pm'},
+    {t:'gym',gym:'Hinge',d:'Morning'},
+    {t:'gym',gym:'Bench or squat',d:'7:30pm'},
+    {t:'tempo',d:'3.5mi: 1 WU, 2mi @ race pace, 0.5 CD'},
+    {t:'intv',d:'3×0.5mi @ 7:40'},
+    {t:'long',d:'5.5mi easy'}]},
+  {wk:24,dates:'31 Aug–6 Sep',vol:'Race Sun',rec:false,days:[
+    {t:'gym',gym:'Squat (light)',d:'Skip prowler'},
+    {t:'easy',d:'2.5mi easy'},
+    {t:'rest',d:'Full rest'},
+    {t:'easy',d:'2mi + 4×100m strides'},
+    {t:'rest',d:'Full rest'},
+    {t:'rest',d:'Full rest'},
+    {t:'race',d:'RACE DAY — sub-50:00!'}]},
+];
+
+// Diet data (per weekday, 0=Mon)
+const DIET = [
+  {day:'Monday',tag:'Easy run',kcal:'1,400',timing:'Run in the morning if possible → brunch 11:30',
+   brunch:{food:'Oats (40g dry) with blueberries, Fage 0% (100g) stirred in & Yakult alongside',kcal:'~420 kcal',p:'P ~28g',c:'C ~55g'},
+   dinner:{food:'2 turkey burgers with green beans & courgette',carb:'Rice (50g dry)  or  white potato (200g raw)',kcal:'~520 kcal',p:'P ~48g',c:'C ~52g'},
+   snacks:[
+     {time:'~2:30pm',id:'m1',text:'Pink lady apple + 1 Babybel light'},
+     {time:'~5pm',id:'m2',text:'Cottage cheese (100g) + 3 salt & vinegar rice cakes'},
+     {time:'~9pm',id:'m3',text:'Lidl protein pudding pot — if hungry after dinner'},
+   ],
+   note:'Easy run = fully conversational pace. Oats post-run replaces glycogen without overfuelling on a low-intensity day.'},
+  {day:'Tuesday',tag:'Gym 7:30pm',kcal:'1,450',timing:'Office day. Brunch at home before commuting. Gym after work — dinner ~9pm.',
+   brunch:{food:'3 eggs scrambled with wafer thin turkey (60g) on 1 bagel thin',kcal:'~440 kcal',p:'P ~42g',c:'C ~32g'},
+   dinner:{food:'Chicken breast (150g) with broccoli, green beans & courgette. No carb portion tonight.',kcal:'~380 kcal',p:'P ~48g',c:'C ~14g'},
+   snacks:[
+     {time:'~2:30pm',id:'t1',text:'Fage 0% (170g) with kiwi — desk snack'},
+     {time:'~5:30pm',id:'t2',text:'2 rice cakes + 1 Babybel light — pre-gym fuel (eat before leaving office)'},
+     {time:'Post-gym',id:'t3',text:'MyProtein Salted Caramel shake (1 scoop + water)',whey:true},
+   ],
+   note:'Pre-gym snack at 5:30 is important — you\'re lifting at 7:30 and brunch was 6 hours ago. Post-gym whey is ideal here — fast absorption after weights.'},
+  {day:'Wednesday',tag:'Hinge day AM',kcal:'1,450',timing:'Gym first thing (free before noon). Brunch AFTER gym ~11:30. No running today.',
+   brunch:{food:'Oats (45g dry) with blueberries, Fage 0% (150g) on top & Yakult — full recovery brunch',kcal:'~480 kcal',p:'P ~32g',c:'C ~60g'},
+   dinner:{food:'Salmon fillet with courgette & green beans',carb:'Rice (50g dry)  or  white potato wedges (200g raw, baked)',kcal:'~480 kcal',p:'P ~42g',c:'C ~48g'},
+   snacks:[
+     {time:'~3pm',id:'w1',text:'Cottage cheese (120g) + pink lady apple'},
+     {time:'~5:30pm',id:'w2',text:'3 rice cakes — light afternoon snack'},
+     {time:'~9pm',id:'w3',text:'Kefir (100ml) — great for overnight gut recovery'},
+   ],
+   note:'Hardest lift day (deadlifts/RDLs). Eat oats immediately after — muscles need carbs + protein within 45 mins. Salmon at dinner reduces inflammation from heavy loading.'},
+  {day:'Thursday',tag:'Gym 7:30pm',kcal:'1,400',timing:'Office day. Same structure as Tuesday. Tomorrow is your most important run — fuel accordingly tonight.',
+   brunch:{food:'Lidl salad bowl + wafer thin turkey (80g) + cottage cheese (100g) + 2 rice cakes',kcal:'~420 kcal',p:'P ~44g',c:'C ~28g'},
+   dinner:{food:'Turkey meatballs (150g) with courgette noodles & passata — quick to make late. Low carb tonight.',kcal:'~420 kcal',p:'P ~44g',c:'C ~22g'},
+   snacks:[
+     {time:'~2:30pm',id:'th1',text:'Fage 0% with blueberries — desk snack'},
+     {time:'~5:30pm',id:'th2',text:'Banana + 2 rice cakes — pre-gym fuel (extra carbs to top up for Friday tempo)'},
+     {time:'Post-gym',id:'th3',text:'MyProtein Salted Caramel shake (1 scoop + water)',whey:true},
+   ],
+   note:'Thursday pre-gym snack includes banana — slightly more carbs because Friday tempo is the most important session. Post-gym whey gives fast recovery before Friday\'s effort.'},
+  {day:'Friday',tag:'Tempo run',kcal:'1,500',timing:'Run mid-morning. Eat brunch 30–45 mins after finishing. Most important training session.',
+   brunch:{food:'Oats (50g dry) with banana (½), blueberries & kefir stirred in + 1 scoop MyProtein Salted Caramel mixed in',kcal:'~530 kcal',p:'P ~43g',c:'C ~72g',whey:true},
+   dinner:{food:'Chicken breast with Lidl salad bowl — bigger carb portion tonight to load for Saturday',carb:'Rice (70g dry)  or  boiled white potato (280g raw)',kcal:'~520 kcal',p:'P ~48g',c:'C ~68g'},
+   snacks:[
+     {time:'Pre-run',id:'f1',text:'2 rice cakes — 30 mins before. Enough to fuel without cramping.'},
+     {time:'~3:30pm',id:'f2',text:'Orange + 1 Babybel light'},
+     {time:'~6pm',id:'f3',text:'Cottage cheese (100g) — protein top-up before dinner'},
+   ],
+   note:'Whey stirred into post-tempo oats gives fast + slow protein at once. Bigger dinner carbs start loading you for Saturday. Protect this session — it\'s where sub-50 fitness is built.'},
+  {day:'Saturday',tag:'Long run / Intervals',kcal:'1,600',timing:'Run in morning. Brunch after (~11:30–12). No gym today. Don\'t undereat on this day.',
+   brunch:{food:'Oats (50g dry) with banana (½), blueberries, Fage 0% (150g) + 1 scoop MyProtein Salted Caramel stirred in',kcal:'~580 kcal',p:'P ~57g',c:'C ~72g',whey:true},
+   dinner:{food:'Prawns stir-fried with courgette & green beans — or turkey meatballs. Biggest carb portion of the week.',carb:'Rice (80g dry)  or  white potato (320g raw, boiled or mashed)',kcal:'~520 kcal',p:'P ~46g',c:'C ~78g'},
+   snacks:[
+     {time:'Pre-run',id:'sa1',text:'Oats (20g) with a little kefir — 90 mins before (on runs over 8 miles)'},
+     {time:'Post-run',id:'sa2',text:'MyProtein Salted Caramel shake (1 scoop + water) within 20 mins of finishing',whey:true},
+     {time:'~4pm',id:'sa3',text:'Kiwi + 1 Babybel light'},
+     {time:'~9pm',id:'sa4',text:'Fage 0% (100g) with blueberries — if still hungry'},
+   ],
+   note:'Immediate post-run whey gives muscles a fast protein hit before the slower-digesting brunch arrives. On runs over 8 miles the pre-run mini-oats matter.'},
+  {day:'Sunday',tag:'Rest day',kcal:'1,350',timing:'No training. Let your body absorb the week\'s work. Batch cook for the week ahead.',
+   brunch:{food:'3-egg omelette with wafer thin turkey (60g), spinach & cottage cheese on the side',kcal:'~400 kcal',p:'P ~48g',c:'C ~8g'},
+   dinner:{food:'Salmon or chicken with broccoli, green beans & courgette — no carb portion today',kcal:'~420 kcal',p:'P ~44g',c:'C ~12g'},
+   snacks:[
+     {time:'~2:30pm',id:'su1',text:'Fage 0% with blueberries + Yakult'},
+     {time:'~5pm',id:'su2',text:'Pink lady apple + 3 rice cakes'},
+     {time:'~8:30pm',id:'su3',text:'Kefir (100ml) — supports gut recovery overnight'},
+   ],
+   note:'No rice or potato today — lowest carb day, no training. Use Sunday afternoon to batch cook rice or boil potatoes, prep chicken and hard-boil eggs for the week ahead.'},
+];
+
+// Injury checklists
+const INJURY_GROUPS = {
+  daily:{label:'Daily ankle routine',sub:'Every morning · 5–8 min · left ankle',color:'#E8A844',
+    items:[
+      {id:'d1',badge:'ankle',label:'Ankle alphabet',detail:'1 full alphabet each direction — move only at the ankle, trace with big toe'},
+      {id:'d2',badge:'ankle',label:'Toe spreads + isolation',detail:'2×10 spreads · 2×10 isolated big toe lifts — sit barefoot, feet flat'},
+      {id:'d3',badge:'ankle',label:'Wall ankle mobility',detail:'5 reps each side — knee to wall, heel flat · track distance weekly'},
+      {id:'d4',badge:'ankle',label:'Banded ankle distraction',detail:'2×10 slow reps — band front of ankle, step into lunge · restores dorsiflexion'},
+    ]},
+  prerun:{label:'Pre-run activation',sub:'Mon / Fri / Sat · 3–5 min · before every run',color:'#2ECC8A',
+    items:[
+      {id:'pr1',badge:'both',label:'Lateral band walks',detail:'2×10 each way — band or without, toes forward'},
+      {id:'pr2',badge:'knee',label:'Terminal knee extensions',detail:'2×10 right leg — band behind knee, last 30° extension, squeeze VMO'},
+      {id:'pr3',badge:'ankle',label:'Single-leg calf raise',detail:'1×10 left foot — bodyweight, normal speed'},
+      {id:'pr4',badge:'ankle',label:'Single-leg balance',detail:'30 sec left foot — current week\'s progression stage'},
+    ]},
+  squat:{label:'Squat day warm-up',sub:'Before squats · 8–10 min',color:'#44C8A8',
+    items:[
+      {id:'sq1',badge:'knee',label:'Lateral band walks',detail:'3×15 each direction — band above knees, 30° squat'},
+      {id:'sq2',badge:'knee',label:'Clamshells',detail:'3×15 right side (do both) — feet together, rotate top knee up, 2 sec hold'},
+      {id:'sq3',badge:'knee',label:'Terminal knee extensions',detail:'3×15 right leg — squeeze VMO at full extension'},
+      {id:'sq4',badge:'ankle',label:'Single-leg balance',detail:'30 sec left foot — current progression stage'},
+    ]},
+  hinge:{label:'Hinge day warm-up',sub:'Wednesday morning · 8–10 min',color:'#4A9EE8',
+    items:[
+      {id:'hi1',badge:'ankle',label:'Banded ankle distraction',detail:'2×10 — restores dorsiflexion before loading posterior chain'},
+      {id:'hi2',badge:'ankle',label:'Eccentric calf raises',detail:'3×12 left foot — rise on two, lower on one, 4 sec lowering on step edge'},
+      {id:'hi3',badge:'ankle',label:'Peroneal eversion',detail:'3×15 — band outside left foot, evert against resistance, 2 sec hold'},
+      {id:'hi4',badge:'both',label:'Single-leg RDL bodyweight',detail:'3×10 each leg — hinge at hip, right knee over second toe'},
+    ]},
+  bench:{label:'Bench day warm-up',sub:'Before bench session · 8–10 min',color:'#9B7FE8',
+    items:[
+      {id:'be1',badge:'knee',label:'Step-downs eccentric',detail:'3×10 right leg — 4 sec lowering, knee over second toe, 15–20cm step'},
+      {id:'be2',badge:'ankle',label:'Single-leg balance progression',detail:'Current stage — wk1-2: flat 30s, wk3-4: eyes closed 20s, wk5+: unstable'},
+      {id:'be3',badge:'knee',label:'Clamshells',detail:'2×15 right side — band above knees'},
+      {id:'be4',badge:'knee',label:'Terminal knee extensions',detail:'2×15 right leg — VMO activation'},
+    ]},
+};
+
+// ═══════════════════════════════════════════════════════════════
+// STORAGE (localStorage fallback)
+// ═══════════════════════════════════════════════════════════════
+let DB = {};
+
+async function dbLoad(key) {
+  try {
+    const r = await window.storage.get(key);
+    return r ? JSON.parse(r.value) : null;
+  } catch {
+    return JSON.parse(localStorage.getItem('app_'+key) || 'null');
+  }
+}
+async function dbSave(key, val) {
+  const s = JSON.stringify(val);
+  try { await window.storage.set(key, s); } catch {}
+  try { localStorage.setItem('app_'+key, s); } catch {}
+}
+
+async function initDB() {
+  DB.sessions  = await dbLoad('sessions')  || {};
+  DB.notes     = await dbLoad('notes')     || {};
+  DB.injury    = await dbLoad('injury')    || {};
+  DB.diet      = await dbLoad('diet')      || {};
+  DB.weights   = await dbLoad('weights')   || [];
+  DB.dietNotes = await dbLoad('dietNotes') || {};
+}
+
+async function saveField(field) { await dbSave(field, DB[field]); }
+
+// ═══════════════════════════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════════════════════════
+function today() {
+  const now = new Date();
+  const ms = now - PLAN_START;
+  const days = Math.floor(ms / 86400000);
+  const wi = Math.min(Math.max(0, Math.floor(days / 7)), 23);
+  const jsDay = now.getDay(); // 0=Sun
+  const planDay = jsDay === 0 ? 6 : jsDay - 1; // 0=Mon
+  const dtr = Math.max(0, Math.round((RACE_DATE - now) / 86400000));
+  const pct = Math.min(100, Math.max(0, days / 168 * 100));
+  return { wi, planDay, dtr, pct, jsDay, days };
+}
+
+function sessionPill(t, gym, big) {
+  const map = {
+    easy: ['pill-easy','Easy run'],
+    long: ['pill-long','Long run'],
+    tempo:['pill-tempo','Tempo'],
+    intv: ['pill-intv','Intervals'],
+    race: ['pill-race','Race'],
+    gym:  ['pill-gym', gym||'Gym'],
+    rest: ['pill-rest','Rest'],
+  };
+  const [cls, lbl] = map[t]||map.rest;
+  return `<span class="pill ${cls}" style="${big?'font-size:13px;padding:5px 12px':''}">${lbl}</span>`;
+}
+
+function phaseColor(wk) {
+  const p = getPhase(wk);
+  return p ? p.color : '#44C8A8';
+}
+function getPhase(wk) {
+  return PHASES.find(p => wk >= p.weeks[0] && wk <= p.weeks[1]) || PHASES[0];
+}
+
+function todayKey(wi, di) { return `w${wi}_d${di}`; }
+function dateKey() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// NAV
+// ═══════════════════════════════════════════════════════════════
+const SECTIONS = ['today','week','plan','diet','injury','progress'];
+function nav(id) {
+  document.querySelectorAll('.nav-btn').forEach((b,i) => b.classList.toggle('active', SECTIONS[i]===id));
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('active');
+  renders[id]();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// RENDER — TODAY
+// ═══════════════════════════════════════════════════════════════
+function renderToday() {
+  const { wi, planDay, dtr, pct, jsDay } = today();
+  const week = WEEKS[wi];
+  const session = week.days[planDay];
+  const phase = getPhase(wi+1);
+  const dayName = DAY_FULL[jsDay];
+  const dk = dateKey();
+
+  // Which injury groups apply today
+  const injGroups = ['daily'];
+  if (session.t !== 'rest') {
+    if (session.t === 'gym') {
+      const g = (session.gym||'').toLowerCase();
+      if (g.includes('hinge')) injGroups.push('hinge');
+      else if (g.includes('bench')) injGroups.push('bench');
+      else injGroups.push('squat');
+    } else {
+      injGroups.push('prerun');
+    }
+  }
+
+  // Diet day (jsDay: 0=Sun→6, 1=Mon→0...)
+  const dietIdx = jsDay === 0 ? 6 : jsDay - 1;
+  const diet = DIET[dietIdx];
+
+  const sKey = `${dk}_s`;
+  const sessionDone = DB.sessions[sKey] || false;
+
+  let html = `
+  <div class="header-band" style="border-color:${phase.color};background:${phase.dim}">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px">
+      <div>
+        <div style="font-size:12px;font-weight:600;color:${phase.color};margin-bottom:4px">${dayName} · Week ${wi+1} · Phase ${phase.id} — ${phase.name}</div>
+        <div style="font-size:24px;font-weight:700;letter-spacing:-0.02em">Today</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:32px;font-weight:700;color:${phase.color};line-height:1">${dtr}</div>
+        <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">days to race</div>
+      </div>
+    </div>
+    <div style="margin-top:14px">
+      <div class="pbar-wrap"><div class="pbar-fill" style="width:${pct.toFixed(1)}%;background:${phase.color}"></div></div>
+      <div style="display:flex;justify-content:space-between;margin-top:4px;font-size:10px;color:var(--faint)">
+        <span>Start</span><span>Base</span><span>Build</span><span>Peak</span><span>Taper</span><span>Race</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Session -->
+  <div class="sec-h">Today's session</div>
+  <div class="card">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:${session.d?'10px':'0'}">
+      <div style="display:flex;align-items:center;gap:8px">
+        ${sessionPill(session.t, session.gym, true)}
+        <span style="font-size:12px;color:var(--muted)">${CTX[planDay]}</span>
+      </div>
+      ${session.t !== 'rest' ? `
+      <button onclick="toggleSession('${sKey}')" style="padding:8px 18px;border-radius:8px;border:1px solid var(--green);font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;background:${sessionDone?'var(--green-dim)':'var(--green)'};color:${sessionDone?'var(--green)':'#060E09'};transition:all .15s">
+        ${sessionDone ? '✓ Done' : 'Mark done'}
+      </button>` : ''}
+    </div>
+    ${session.d ? `<div style="font-size:14px;font-weight:500;margin-bottom:8px">${session.d}</div>` : ''}
+    <textarea placeholder="How did it go? Pace, effort, notes..." style="margin-top:4px" oninput="saveSessionNote('${dk}',this.value)">${DB.notes['sn_'+dk]||''}</textarea>
+  </div>
+
+  <!-- Injury checklists -->
+  <div class="sec-h">Injury prevention — today</div>
+  ${injGroups.map(gid => {
+    const g = INJURY_GROUPS[gid];
+    const done = g.items.filter(i => DB.injury[`${dk}_${i.id}`]).length;
+    return `
+    <div class="card-sm" style="border-color:${g.color}22">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <div>
+          <div style="font-size:13px;font-weight:600;color:${g.color}">${g.label}</div>
+          <div style="font-size:11px;color:var(--muted)">${g.sub}</div>
+        </div>
+        <div style="font-size:13px;font-weight:700;color:${done===g.items.length?'var(--green)':'var(--amber)'}">${done}/${g.items.length}</div>
+      </div>
+      ${g.items.map(item => {
+        const checked = DB.injury[`${dk}_${item.id}`]||false;
+        const badgeCls = {ankle:'cb-ankle',knee:'cb-knee',both:'cb-both'}[item.badge]||'';
+        return `<div class="cb-row${checked?' done':''}" id="cbrow_${dk}_${item.id}">
+          <input type="checkbox" id="cb_${dk}_${item.id}" ${checked?'checked':''} onchange="toggleInjury('${dk}','${item.id}','${gid}',this.checked)">
+          <label for="cb_${dk}_${item.id}">${item.label}<span class="cb-detail">${item.detail}</span></label>
+          <span class="cb-badge ${badgeCls}">${item.badge}</span>
+        </div>`;
+      }).join('')}
+    </div>`;
+  }).join('')}
+
+  <!-- Diet today -->
+  <div class="sec-h">Today's meals — ${diet.day}</div>
+  <div class="card-sm" style="margin-bottom:8px;background:var(--amber-bg);border-color:var(--amber)33">
+    <div style="font-size:12px;font-weight:600;color:var(--amber);margin-bottom:2px">${diet.tag} · ${diet.kcal} kcal · Protein target 120g+</div>
+    <div style="font-size:12px;color:var(--muted)">${diet.timing}</div>
+  </div>
+  <div class="meal-grid">
+    <div class="meal-card">
+      <div class="meal-label">Brunch ~11:30</div>
+      <div class="meal-text">${diet.brunch.food}${diet.brunch.whey?'<span class="whey-tag">WHEY</span>':''}</div>
+      <div class="meal-macros"><span class="macro-chip">${diet.brunch.kcal}</span><span class="macro-chip">${diet.brunch.p}</span><span class="macro-chip">${diet.brunch.c}</span></div>
+    </div>
+    <div class="meal-card">
+      <div class="meal-label">Dinner ~7pm</div>
+      <div class="meal-text">${diet.dinner.food}</div>
+      ${diet.dinner.carb?`<div class="carb-swap">${diet.dinner.carb}</div>`:''}
+      <div class="meal-macros"><span class="macro-chip">${diet.dinner.kcal}</span><span class="macro-chip">${diet.dinner.p}</span><span class="macro-chip">${diet.dinner.c}</span></div>
+    </div>
+  </div>
+  <div class="card-sm">
+    <div class="meal-label" style="margin-bottom:8px">Snacks</div>
+    ${diet.snacks.map(s=>{
+      const dk2=dk+'_diet';
+      const checked=DB.diet[`${dk2}_${s.id}`]||false;
+      return `<div class="cb-row${checked?' done':''}" id="cbrow_diet_${dk}_${s.id}">
+        <input type="checkbox" id="cb_diet_${dk}_${s.id}" ${checked?'checked':''} onchange="toggleDietSnack('${dk}','${s.id}',this.checked)">
+        <label for="cb_diet_${dk}_${s.id}"><span style="color:var(--muted);font-size:11px;margin-right:6px">${s.time}</span>${s.text}${s.whey?'<span class="whey-tag">WHEY</span>':''}</label>
+      </div>`;
+    }).join('')}
+  </div>
+  <div style="background:var(--green-bg);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--green);line-height:1.6;margin-bottom:12px">${diet.note}</div>
+  <textarea placeholder="Diet notes for today — carb choice, energy levels, how you felt..." oninput="saveDietNote('${dk}',this.value)">${DB.dietNotes[dk]||''}</textarea>
+  `;
+
+  document.getElementById('sec-today').innerHTML = html;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// RENDER — THIS WEEK
+// ═══════════════════════════════════════════════════════════════
+function renderWeek() {
+  const { wi, planDay, jsDay } = today();
+  const week = WEEKS[wi];
+  const phase = getPhase(wi+1);
+  const dk = dateKey();
+
+  // Calculate week start date
+  const weekStart = new Date(PLAN_START);
+  weekStart.setDate(weekStart.getDate() + wi * 7);
+
+  let html = `
+  <div class="header-band" style="border-color:${phase.color}44">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+      <div>
+        <div style="font-size:12px;color:${phase.color};font-weight:600;margin-bottom:3px">Phase ${phase.id} — ${phase.name}</div>
+        <div style="font-size:22px;font-weight:700;letter-spacing:-0.01em">Week ${wi+1} <span style="color:var(--muted);font-size:14px;font-weight:400">· ${week.dates}</span></div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:18px;font-weight:600">${week.vol}</div>
+        <div style="font-size:11px;color:var(--muted)">${week.rec?'Recovery week':'Running volume'}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="week-grid">
+    ${['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map((d,i) => {
+      const s = week.days[i];
+      const sKey = `w${wi}_d${i}`;
+      // We use a day-specific key for current week's completions
+      // Find actual calendar date for this day
+      const dayDate = new Date(weekStart);
+      dayDate.setDate(dayDate.getDate() + i);
+      const dayDk = `${dayDate.getFullYear()}-${String(dayDate.getMonth()+1).padStart(2,'0')}-${String(dayDate.getDate()).padStart(2,'0')}`;
+      const done = DB.sessions[dayDk+'_s'] || false;
+      const isToday = i === planDay;
+      const styleMap = {
+        easy:'var(--green)',long:'var(--purple)',tempo:'var(--blue)',
+        intv:'var(--amber)',race:'var(--coral)',gym:'var(--teal)',rest:'var(--faint)'
+      };
+      const col = styleMap[s.t]||'var(--faint)';
+      return `<div class="day-cell${isToday?' today':''}${done?' done-cell':''}" onclick="openDayDetail(${i})">
+        <div class="day-name-sm">${d}</div>
+        <div style="margin-bottom:5px">${sessionPill(s.t,s.gym)}</div>
+        <div style="font-size:10px;color:var(--muted);line-height:1.3">${s.d||''}</div>
+        ${done?`<div style="font-size:10px;color:var(--green);margin-top:4px;font-weight:600">✓</div>`:''}
+      </div>`;
+    }).join('')}
+  </div>
+
+  <div class="sec-h">Weekly notes</div>
+  <textarea placeholder="How is this week going? Ankle, knee, energy, any adjustments..." oninput="saveNote('wk${wi}',this.value)">${DB.notes['wk'+wi]||''}</textarea>
+
+  <div class="sec-h" style="margin-top:16px">Weight this week</div>
+  <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap">
+    <input id="wt-val" type="number" step="0.1" placeholder="lbs" style="width:90px;background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-family:inherit;font-size:14px;">
+    <button class="btn btn-green btn-sm" onclick="logWeight()" style="padding:8px 16px">Log weight</button>
+  </div>
+  <div class="weight-entries">
+    ${[...DB.weights].reverse().slice(0,10).map(e=>`
+    <div class="weight-entry">
+      <span style="color:var(--muted);font-size:12px">${e.date}</span>
+      <span style="font-weight:600">${e.val} lb</span>
+      <span style="font-size:12px;color:${e.val<=130?'var(--green)':e.val<=140?'var(--amber)':'var(--coral)'}">
+        ${e.val <= 130 ? '⚑ Goal!' : e.val <= 135 ? '▼ Close' : ''}
+      </span>
+      <button class="weight-del" onclick="deleteWeight('${e.id}')">×</button>
+    </div>`).join('') || '<div style="color:var(--faint);font-size:13px;padding:8px 0">No weight entries yet</div>'}
+  </div>
+  `;
+
+  document.getElementById('sec-week').innerHTML = html;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// RENDER — FULL PLAN
+// ═══════════════════════════════════════════════════════════════
+function renderPlan() {
+  const { wi } = today();
+  let html = `<div style="font-size:22px;font-weight:700;letter-spacing:-0.01em;margin-bottom:14px">All 24 weeks</div>`;
+
+  PHASES.forEach(ph => {
+    const phWeeks = WEEKS.filter(w => getPhase(w.wk).id === ph.id);
+    html += `<div style="margin-bottom:6px;padding:10px 14px;background:${ph.dim};border:1px solid ${ph.color}33;border-radius:10px;font-size:13px;font-weight:600;color:${ph.color}">
+      Phase ${ph.id} — ${ph.name}
+    </div>`;
+    phWeeks.forEach(week => {
+      const wIdx = week.wk - 1;
+      const isCurrent = wIdx === wi;
+      const completedCount = week.days.filter((d,i) => {
+        const weekStart = new Date(PLAN_START);
+        weekStart.setDate(weekStart.getDate() + wIdx * 7);
+        const dayDate = new Date(weekStart);
+        dayDate.setDate(dayDate.getDate() + i);
+        const dk = `${dayDate.getFullYear()}-${String(dayDate.getMonth()+1).padStart(2,'0')}-${String(dayDate.getDate()).padStart(2,'0')}`;
+        return DB.sessions[dk+'_s'];
+      }).length;
+      const nonRest = week.days.filter(d=>d.t!=='rest').length;
+
+      html += `<div class="plan-week-row" style="${isCurrent?'border-color:var(--green)':''}">
+        <div class="plan-week-header" onclick="togglePlanWeek(${wIdx})">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+            ${isCurrent?`<span style="font-size:10px;font-weight:600;color:var(--green);background:var(--green-bg);padding:2px 7px;border-radius:5px">CURRENT</span>`:''}
+            ${week.rec?`<span style="font-size:10px;font-weight:600;color:var(--amber);background:var(--amber-bg);padding:2px 7px;border-radius:5px">RECOVERY</span>`:''}
+            <span style="font-size:13px;font-weight:600">${week.wk <= 6 ? 'Week' : 'Week'} ${week.wk}</span>
+            <span style="font-size:12px;color:var(--muted)">${week.dates}</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px">
+            <span style="font-size:12px;color:var(--muted)">${week.vol}</span>
+            <span style="font-size:12px;color:${completedCount>0?'var(--green)':'var(--faint)'}">${completedCount}/${nonRest}</span>
+            <span style="color:var(--faint);font-size:16px" id="arr_${wIdx}">›</span>
+          </div>
+        </div>
+        <div class="plan-week-body" id="pwb_${wIdx}">
+          <div class="plan-days-grid">
+            ${['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map((d,i)=>{
+              const s = week.days[i];
+              const weekStart = new Date(PLAN_START);
+              weekStart.setDate(weekStart.getDate() + wIdx * 7);
+              const dayDate = new Date(weekStart);
+              dayDate.setDate(dayDate.getDate() + i);
+              const dk = `${dayDate.getFullYear()}-${String(dayDate.getMonth()+1).padStart(2,'0')}-${String(dayDate.getDate()).padStart(2,'0')}`;
+              const done = DB.sessions[dk+'_s']||false;
+              return `<div class="plan-day" style="${done?'background:var(--green-dim)':''}">
+                <div class="plan-day-name">${d}</div>
+                ${sessionPill(s.t,s.gym)}
+                <div style="font-size:10px;color:var(--faint);margin-top:4px;line-height:1.3">${s.d||''}</div>
+                ${s.t!=='rest'?`<div style="display:flex;align-items:center;gap:4px;margin-top:6px">
+                  <input type="checkbox" ${done?'checked':''} style="width:13px;height:13px;accent-color:var(--green);cursor:pointer" onchange="toggleSessionByDate('${dk}',this.checked)">
+                  <span style="font-size:10px;color:var(--faint)">Done</span>
+                </div>`:''}
+              </div>`;
+            }).join('')}
+          </div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:6px">Week notes</div>
+          <textarea style="min-height:48px" placeholder="Notes for this week..." oninput="saveNote('wk${wIdx}',this.value)">${DB.notes['wk'+wIdx]||''}</textarea>
+        </div>
+      </div>`;
+    });
+  });
+
+  document.getElementById('sec-plan').innerHTML = html;
+
+  // Auto-open current week
+  const body = document.getElementById('pwb_'+wi);
+  if (body) { body.classList.add('open'); document.getElementById('arr_'+wi).textContent='⌄'; }
+}
+
+function togglePlanWeek(i) {
+  const body = document.getElementById('pwb_'+i);
+  const arr  = document.getElementById('arr_'+i);
+  if (!body) return;
+  const open = body.classList.toggle('open');
+  arr.textContent = open ? '⌄' : '›';
+}
+
+// ═══════════════════════════════════════════════════════════════
+// RENDER — DIET
+// ═══════════════════════════════════════════════════════════════
+function renderDiet() {
+  const { jsDay } = today();
+  const todayDietIdx = jsDay === 0 ? 6 : jsDay - 1;
+
+  let html = `<div style="font-size:22px;font-weight:700;letter-spacing:-0.01em;margin-bottom:4px">Diet plan</div>
+  <div style="font-size:13px;color:var(--muted);margin-bottom:16px">36F · 147 lb → 130 lb target ~mid July · 1,350–1,600 kcal by training type · Protein 120g+ daily</div>
+
+  <div class="card-sm" style="background:var(--amber-bg);border-color:var(--amber)44;margin-bottom:8px">
+    <div style="font-size:12px;font-weight:600;color:var(--amber);margin-bottom:4px">How calories flex with training</div>
+    <div style="font-size:12px;color:#C8963A;line-height:1.7">Easy run & gym evenings: 1,400–1,450 kcal · Tempo Friday: 1,500 kcal · Long run / intervals Saturday: 1,600 kcal · Rest Sunday: 1,350 kcal</div>
+  </div>
+  <div class="card-sm" style="background:var(--blue-bg);border-color:var(--blue)44;margin-bottom:8px">
+    <div style="font-size:12px;font-weight:600;color:var(--blue);margin-bottom:4px">Rice or white potato — swap freely</div>
+    <div style="font-size:12px;color:#3A7AB8;line-height:1.7">50g dry rice ≈ 200g raw potato. Potato is slightly more filling per calorie, great on rest days. Rice is faster to cook. Your choice every day.</div>
+  </div>
+  <div class="card-sm" style="background:var(--pink-bg);border-color:var(--pink)44;margin-bottom:16px">
+    <div style="font-size:12px;font-weight:600;color:var(--pink);margin-bottom:4px">MyProtein Salted Caramel Whey Isolate</div>
+    <div style="font-size:12px;color:#B8386A;line-height:1.7">Use within 20–30 mins post-run or post-gym. Stir into Friday/Saturday oats or shake with water. On Tue/Thu gym nights use alongside or instead of the pudding pot. Never as a meal replacement.</div>
+  </div>`;
+
+  DIET.forEach((diet, idx) => {
+    const isToday = idx === todayDietIdx;
+    // Use a persistent key per weekday for diet snack tracking
+    const dk = `diet_dow_${idx}`;
+    html += `<div class="card" style="${isToday?'border-color:var(--amber)':''}">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:12px">
+        <div style="display:flex;align-items:center;gap:8px">
+          ${isToday?`<span style="font-size:10px;font-weight:600;color:var(--amber);background:var(--amber-bg);padding:2px 8px;border-radius:5px">TODAY</span>`:''}
+          <span style="font-size:16px;font-weight:600">${diet.day}</span>
+          <span style="font-size:11px;color:var(--muted)">${diet.tag}</span>
+        </div>
+        <span style="font-size:13px;font-weight:600;color:var(--amber)">${diet.kcal} kcal</span>
+      </div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:12px;font-style:italic">${diet.timing}</div>
+
+      <div class="meal-grid">
+        <div class="meal-card">
+          <div class="meal-label">Brunch ~11:30</div>
+          <div class="meal-text">${diet.brunch.food}${diet.brunch.whey?'<span class="whey-tag">WHEY</span>':''}</div>
+          <div class="meal-macros"><span class="macro-chip">${diet.brunch.kcal}</span><span class="macro-chip">${diet.brunch.p}</span><span class="macro-chip">${diet.brunch.c}</span></div>
+        </div>
+        <div class="meal-card">
+          <div class="meal-label">Dinner ~7pm</div>
+          <div class="meal-text">${diet.dinner.food}</div>
+          ${diet.dinner.carb?`<div class="carb-swap">${diet.dinner.carb}</div>`:''}
+          <div class="meal-macros"><span class="macro-chip">${diet.dinner.kcal}</span><span class="macro-chip">${diet.dinner.p}</span><span class="macro-chip">${diet.dinner.c}</span></div>
+        </div>
+      </div>
+
+      <div class="meal-label" style="margin-bottom:8px">Snacks</div>
+      ${diet.snacks.map(s=>{
+        const checked = DB.diet[`${dk}_${s.id}`]||false;
+        return `<div class="cb-row${checked?' done':''}" id="cbrow_${dk}_${s.id}">
+          <input type="checkbox" id="cb_${dk}_${s.id}" ${checked?'checked':''} onchange="toggleDietSnackDOW(${idx},'${s.id}',this.checked)">
+          <label for="cb_${dk}_${s.id}"><span style="color:var(--muted);font-size:11px;margin-right:6px">${s.time}</span>${s.text}${s.whey?'<span class="whey-tag">WHEY</span>':''}</label>
+        </div>`;
+      }).join('')}
+
+      <div style="background:var(--green-bg);border-radius:7px;padding:9px 12px;font-size:12px;color:var(--green);line-height:1.6;margin:10px 0 8px">${diet.note}</div>
+      <textarea style="min-height:48px" placeholder="${diet.day} notes — energy, carb choice, how you felt..." oninput="saveDietWeekdayNote(${idx},this.value)">${DB.dietNotes['dow_'+idx]||''}</textarea>
+    </div>`;
+  });
+
+  html += `<div class="sec-h">Weekly overall diet notes</div>
+  <textarea placeholder="Weight · Energy levels · What worked · What to tweak · Digestion notes..." oninput="saveNote('diet_weekly',this.value)">${DB.notes['diet_weekly']||''}</textarea>`;
+
+  document.getElementById('sec-diet').innerHTML = html;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// RENDER — INJURY
+// ═══════════════════════════════════════════════════════════════
+function renderInjury() {
+  const dk = dateKey();
+
+  // Calculate streaks for daily routine
+  let dailyStreak = 0;
+  for (let i = 0; i < 30; i++) {
+    const d = new Date(); d.setDate(d.getDate() - i);
+    const k = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    const allDone = INJURY_GROUPS.daily.items.every(item => DB.injury[`${k}_${item.id}`]);
+    if (allDone) dailyStreak++;
+    else if (i > 0) break;
+  }
+
+  let html = `<div style="font-size:22px;font-weight:700;letter-spacing:-0.01em;margin-bottom:4px">Injury prevention</div>
+  <div style="font-size:13px;color:var(--muted);margin-bottom:16px">Left ankle (lateral sprain ~8 wks) · Right knee (medial pain)</div>
+
+  <div class="alert" style="margin-bottom:14px">A single physio session is strongly recommended — ankle is only ~8 weeks post-sprain. A physio can confirm ligament grade and screen hip mechanics for the knee. This plan is for maintenance, not a substitute for assessment.</div>
+
+  <div class="stat-grid">
+    <div class="stat-card"><div class="stat-val" style="color:var(--green)">${dailyStreak}</div><div class="stat-label">Daily streak</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:var(--amber)">${countInjuryToday(dk)}</div><div class="stat-label">Done today</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:var(--blue)">${countTotalInjury()}</div><div class="stat-label">Total logged</div></div>
+  </div>`;
+
+  Object.entries(INJURY_GROUPS).forEach(([gid, g]) => {
+    const done = g.items.filter(i => DB.injury[`${dk}_${i.id}`]).length;
+    html += `<div class="sec-h">${g.label}</div>
+    <div class="card-sm" style="border-color:${g.color}33">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+        <div style="font-size:12px;color:var(--muted)">${g.sub}</div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="font-size:13px;font-weight:700;color:${done===g.items.length?'var(--green)':'var(--amber)'}">${done}/${g.items.length}</span>
+          <button class="btn btn-sm" onclick="resetInjuryGroup('${dk}','${gid}')">Reset</button>
+        </div>
+      </div>
+      ${g.items.map(item => {
+        const checked = DB.injury[`${dk}_${item.id}`]||false;
+        const badgeCls = {ankle:'cb-ankle',knee:'cb-knee',both:'cb-both'}[item.badge]||'';
+        return `<div class="cb-row${checked?' done':''}" id="inj_${dk}_${item.id}">
+          <input type="checkbox" id="injcb_${dk}_${item.id}" ${checked?'checked':''} onchange="toggleInjury('${dk}','${item.id}','${gid}',this.checked)">
+          <label for="injcb_${dk}_${item.id}">${item.label}<span class="cb-detail">${item.detail}</span></label>
+          <span class="cb-badge ${badgeCls}">${item.badge}</span>
+        </div>`;
+      }).join('')}
+    </div>`;
+  });
+
+  html += `
+  <div class="sec-h">Balance progression — current stage</div>
+  <div class="card-sm">
+    ${[
+      {wk:'1–2',desc:'Eyes open, flat surface — 30 sec × 3'},
+      {wk:'3–4',desc:'Eyes closed, flat surface — 20 sec × 3'},
+      {wk:'5–6',desc:'Eyes open, folded towel under foot — 30 sec × 3'},
+      {wk:'7–9',desc:'Eyes open, small ball under foot — 30 sec × 3'},
+      {wk:'10+',desc:'Single-leg mini squat on unstable surface — 3×10'},
+    ].map((s,i)=>{
+      const {wi}=today();
+      const isCurrent = (i===0&&wi<2)||(i===1&&wi>=2&&wi<4)||(i===2&&wi>=4&&wi<6)||(i===3&&wi>=6&&wi<9)||(i===4&&wi>=9);
+      return `<div style="display:flex;gap:10px;padding:7px 0;border-bottom:1px solid var(--border);align-items:center">
+        <span style="font-size:11px;font-weight:600;color:${isCurrent?'var(--green)':'var(--faint)'};min-width:36px">Wk ${s.wk}</span>
+        <span style="font-size:13px;color:${isCurrent?'var(--text)':'var(--muted)'}">${s.desc}</span>
+        ${isCurrent?'<span style="font-size:10px;font-weight:600;color:var(--green);background:var(--green-bg);padding:2px 7px;border-radius:5px;margin-left:auto">NOW</span>':''}
+      </div>`;
+    }).join('')}
+  </div>
+
+  <div class="sec-h">Warning signs — stop immediately if</div>
+  <div class="alert"><strong>Ankle:</strong> Sharp pain during weight-bearing · Increasing swelling · Ankle giving way during walking · Worse morning after run two weeks running</div>
+  <div class="alert"><strong>Knee:</strong> Medial pain starting during a run · Pain above 4/10 · Swelling around medial joint line · Locking or clicking · Worsening week on week</div>
+  <div style="background:var(--card2);border-radius:8px;padding:12px 14px;font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:10px">
+    <strong style="color:var(--text)">The 2/10 rule:</strong> Pain up to 2/10 that doesn't increase during a session and returns to baseline within 24h is generally fine to train through. Above 3/10, or lasting more than 24h = reduce load.
+  </div>
+  <textarea placeholder="Injury notes — ankle stiffness, knee soreness, any concerns..." oninput="saveNote('injury_notes',this.value)">${DB.notes['injury_notes']||''}</textarea>
+  `;
+
+  document.getElementById('sec-injury').innerHTML = html;
+}
+
+function countInjuryToday(dk) {
+  return Object.keys(INJURY_GROUPS).reduce((sum,gid) =>
+    sum + INJURY_GROUPS[gid].items.filter(i => DB.injury[`${dk}_${i.id}`]).length, 0);
+}
+function countTotalInjury() {
+  return Object.keys(DB.injury).filter(k => DB.injury[k]).length;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// RENDER — PROGRESS
+// ═══════════════════════════════════════════════════════════════
+function renderProgress() {
+  const { wi, dtr, pct } = today();
+
+  // Count completed sessions
+  let totalSessions = 0, completedSessions = 0;
+  WEEKS.forEach((week, wIdx) => {
+    week.days.forEach((d, dIdx) => {
+      if (d.t !== 'rest') {
+        totalSessions++;
+        const weekStart = new Date(PLAN_START);
+        weekStart.setDate(weekStart.getDate() + wIdx * 7);
+        const dayDate = new Date(weekStart);
+        dayDate.setDate(dayDate.getDate() + dIdx);
+        const dk = `${dayDate.getFullYear()}-${String(dayDate.getMonth()+1).padStart(2,'0')}-${String(dayDate.getDate()).padStart(2,'0')}`;
+        if (DB.sessions[dk+'_s']) completedSessions++;
+      }
+    });
+  });
+
+  // Latest weight
+  const latestWeight = DB.weights.length > 0 ? DB.weights[DB.weights.length-1].val : '—';
+  const startWeight = 147;
+  const goalWeight = 130;
+  const weightLost = DB.weights.length > 0 ? (startWeight - parseFloat(DB.weights[DB.weights.length-1].val)).toFixed(1) : '0';
+  const weightPct = DB.weights.length > 0 ? Math.min(100, Math.max(0, (startWeight - parseFloat(DB.weights[DB.weights.length-1].val)) / (startWeight - goalWeight) * 100)) : 0;
+
+  let html = `<div style="font-size:22px;font-weight:700;letter-spacing:-0.01em;margin-bottom:16px">Progress</div>
+
+  <div class="stat-grid">
+    <div class="stat-card"><div class="stat-val" style="color:var(--green)">${completedSessions}</div><div class="stat-label">Sessions done</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:var(--blue)">${wi+1}</div><div class="stat-label">Current week</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:var(--amber)">${dtr}</div><div class="stat-label">Days to race</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:var(--coral)">${latestWeight}</div><div class="stat-label">Last weight (lb)</div></div>
+  </div>
+
+  <div class="sec-h">Plan progress</div>
+  <div class="card-sm">
+    <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:6px">
+      <span>Training plan</span><span>${pct.toFixed(0)}% complete</span>
+    </div>
+    <div class="pbar-wrap"><div class="pbar-fill" style="width:${pct.toFixed(1)}%;background:var(--green)"></div></div>
+    <div style="display:flex;justify-content:space-between;margin-top:4px;font-size:10px;color:var(--faint)">
+      <span>23 Mar</span><span>6 Sep</span>
+    </div>
+  </div>
+  <div class="card-sm" style="margin-top:8px">
+    <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:6px">
+      <span>Sessions completed</span><span>${completedSessions} / ${totalSessions}</span>
+    </div>
+    <div class="pbar-wrap"><div class="pbar-fill" style="width:${totalSessions>0?(completedSessions/totalSessions*100).toFixed(1):0}%;background:var(--teal)"></div></div>
+  </div>
+
+  <div class="sec-h">Weight progress</div>
+  <div class="card-sm" style="margin-bottom:8px">
+    <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:6px">
+      <span>147 lb → 130 lb goal</span><span>${weightLost > 0 ? weightLost + ' lb lost' : 'Start logging'}</span>
+    </div>
+    <div class="pbar-wrap"><div class="pbar-fill" style="width:${weightPct.toFixed(1)}%;background:var(--amber)"></div></div>
+    <div style="display:flex;justify-content:space-between;margin-top:4px;font-size:10px;color:var(--faint)">
+      <span>147 lb</span><span>Goal: 130 lb (~mid Jul)</span>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap">
+    <input id="wt-val2" type="number" step="0.1" placeholder="Weight in lbs" style="flex:1;min-width:120px;background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-family:inherit;font-size:14px;">
+    <button class="btn btn-green" onclick="logWeight2()">Log weight</button>
+  </div>
+
+  <div class="weight-entries" style="max-height:250px">
+    ${DB.weights.length === 0 ? '<div style="color:var(--faint);font-size:13px;padding:8px 0">No weight entries yet — log your first one above</div>' :
+    [...DB.weights].reverse().map(e => `
+    <div class="weight-entry">
+      <span style="color:var(--muted);font-size:12px">${e.date}</span>
+      <span style="font-size:16px;font-weight:600">${e.val} lb</span>
+      <span style="font-size:12px;font-weight:500;color:${parseFloat(e.val)<=130?'var(--green)':parseFloat(e.val)<=137?'var(--amber)':'var(--coral)'}">${parseFloat(e.val)<=130?'Goal!':'→ '+(parseFloat(e.val)-130).toFixed(1)+' to go'}</span>
+      <button class="weight-del" onclick="deleteWeight('${e.id}')">×</button>
+    </div>`).join('')}
+  </div>
+
+  <div class="sec-h">Pace targets</div>
+  <div class="card-sm">
+    ${[
+      ['Easy / recovery','9:40–10:30 /mi'],
+      ['Long run','9:15–10:00 /mi'],
+      ['Tempo (threshold)','8:20–8:35 /mi'],
+      ['Intervals','7:40–7:55 /mi'],
+      ['Race target','8:03 /mi'],
+      ['Current fitness','~8:51 /mi (54:58 on 15 Mar)'],
+    ].map(([label,val])=>`
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)">
+      <span style="font-size:13px;color:var(--muted)">${label}</span>
+      <span style="font-family:'DM Mono',monospace;font-size:14px;font-weight:500;color:${label==='Race target'?'var(--coral)':label==='Current fitness'?'var(--amber)':'var(--text)'}">${val}</span>
+    </div>`).join('')}
+  </div>
+
+  <div class="sec-h">Race day strategy</div>
+  <div class="card-sm" style="background:var(--coral-bg);border-color:var(--coral)33">
+    ${[
+      ['Warm up','—','10–12 min easy jog + 4×100m strides'],
+      ['Mile 1','8:10','Will feel easy. Resist going faster. That\'s correct.'],
+      ['Miles 2–5','8:03','Settle in and hold. Controlled.'],
+      ['Mile 6','all out','Empty the tank. You\'ve done the work.'],
+    ].map(([l,p,n])=>`
+    <div style="display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--coral)22;align-items:baseline">
+      <span style="font-size:12px;font-weight:600;color:var(--coral);min-width:55px">${l}</span>
+      <span style="font-family:'DM Mono',monospace;font-size:14px;font-weight:500;color:var(--coral);min-width:55px">${p}</span>
+      <span style="font-size:12px;color:#C05030;opacity:.9">${n}</span>
+    </div>`).join('')}
+  </div>
+  `;
+
+  document.getElementById('sec-progress').innerHTML = html;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// ACTIONS
+// ═══════════════════════════════════════════════════════════════
+function toggleSession(key) {
+  DB.sessions[key] = !DB.sessions[key];
+  saveField('sessions');
+  renders.today();
+}
+function toggleSessionByDate(dk, checked) {
+  DB.sessions[dk+'_s'] = checked;
+  saveField('sessions');
+}
+function toggleInjury(dk, itemId, gid, checked) {
+  DB.injury[`${dk}_${itemId}`] = checked;
+  saveField('injury');
+  // Update row styling
+  const row = document.getElementById(`cbrow_${dk}_${itemId}`) || document.getElementById(`inj_${dk}_${itemId}`);
+  if (row) row.classList.toggle('done', checked);
+  // Update counts
+  const g = INJURY_GROUPS[gid];
+  if (!g) return;
+  const done = g.items.filter(i => DB.injury[`${dk}_${i.id}`]).length;
+  // find count elements
+  document.querySelectorAll(`[data-count="${gid}"]`).forEach(el => {
+    el.textContent = `${done}/${g.items.length}`;
+    el.style.color = done === g.items.length ? 'var(--green)' : 'var(--amber)';
+  });
+}
+function resetInjuryGroup(dk, gid) {
+  INJURY_GROUPS[gid].items.forEach(i => { DB.injury[`${dk}_${i.id}`] = false; });
+  saveField('injury');
+  renders.injury();
+}
+function toggleDietSnack(dk, snackId, checked) {
+  const k = dk+'_diet_'+snackId;
+  DB.diet[k] = checked;
+  saveField('diet');
+  const row = document.getElementById(`cbrow_diet_${dk}_${snackId}`);
+  if (row) row.classList.toggle('done', checked);
+}
+function toggleDietSnackDOW(dayIdx, snackId, checked) {
+  const k = `diet_dow_${dayIdx}_${snackId}`;
+  DB.diet[k] = checked;
+  saveField('diet');
+  const row = document.getElementById(`cbrow_diet_dow_${dayIdx}_${snackId}`);
+  if (row) row.classList.toggle('done', checked);
+}
+function saveSessionNote(dk, val) {
+  DB.notes['sn_'+dk] = val;
+  saveField('notes');
+}
+function saveNote(key, val) {
+  DB.notes[key] = val;
+  saveField('notes');
+}
+function saveDietNote(dk, val) {
+  DB.dietNotes[dk] = val;
+  saveField('dietNotes');
+}
+function saveDietWeekdayNote(idx, val) {
+  DB.dietNotes['dow_'+idx] = val;
+  saveField('dietNotes');
+}
+function logWeight() {
+  const inp = document.getElementById('wt-val');
+  const val = parseFloat(inp.value);
+  if (!val || val < 80 || val > 300) return;
+  DB.weights.push({ id: Date.now()+'', date: new Date().toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}), val });
+  saveField('weights');
+  inp.value = '';
+  renders.week();
+}
+function logWeight2() {
+  const inp = document.getElementById('wt-val2');
+  const val = parseFloat(inp.value);
+  if (!val || val < 80 || val > 300) return;
+  DB.weights.push({ id: Date.now()+'', date: new Date().toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}), val });
+  saveField('weights');
+  inp.value = '';
+  renders.progress();
+}
+function deleteWeight(id) {
+  DB.weights = DB.weights.filter(w => w.id !== id);
+  saveField('weights');
+  // Re-render whichever section is visible
+  const activeId = document.querySelector('.section.active')?.id?.replace('sec-','');
+  if (activeId && renders[activeId]) renders[activeId]();
+}
+function openDayDetail(i) {
+  // Navigate to plan and show week detail
+  nav('plan');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// RENDER MAP
+// ═══════════════════════════════════════════════════════════════
+const renders = {
+  today:    renderToday,
+  week:     renderWeek,
+  plan:     renderPlan,
+  diet:     renderDiet,
+  injury:   renderInjury,
+  progress: renderProgress,
+};
+
+// ═══════════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════════
+initDB().then(() => {
+  renders.today();
+});
+</script>
+</body>
+</html>
