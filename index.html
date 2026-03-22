@@ -6,7 +6,7 @@
 <title>Sub-50 Training App</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
-
+ 
 :root {
   --bg:#0D0D0D; --card:#161616; --card2:#1E1E1E; --border:#252525; --border2:#2E2E2E;
   --text:#F0EDE8; --muted:#888880; --faint:#444440;
@@ -19,33 +19,33 @@
   --red:#E84444; --red-bg:#2A0808;
   --pink:#E84488; --pink-bg:#2A0818;
 }
-
+ 
 *{box-sizing:border-box;margin:0;padding:0;}
 html,body{height:100%;overflow:hidden;}
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);font-size:14px;display:flex;flex-direction:column;}
-
+ 
 /* ── Nav bar ── */
 .nav{display:flex;background:var(--card);border-bottom:1px solid var(--border);overflow-x:auto;flex-shrink:0;scrollbar-width:none;}
 .nav::-webkit-scrollbar{display:none;}
 .nav-btn{flex-shrink:0;padding:14px 20px;font-size:13px;font-weight:500;font-family:inherit;background:none;border:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;}
 .nav-btn.active{color:var(--text);border-bottom-color:var(--green);}
 .nav-btn:hover:not(.active){color:var(--text);}
-
+ 
 /* ── Main scroll area ── */
 .main{flex:1;overflow-y:auto;padding:20px;scrollbar-width:thin;scrollbar-color:var(--border2) transparent;}
 .section{display:none;}
 .section.active{display:block;}
-
+ 
 /* ── Cards ── */
 .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px 20px;margin-bottom:12px;}
 .card-sm{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:8px;}
 .card-h{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
 .card-title{font-size:14px;font-weight:600;color:var(--text);}
 .card-sub{font-size:12px;color:var(--muted);margin-top:2px;}
-
+ 
 /* ── Header band ── */
 .header-band{background:var(--card2);border:1px solid var(--border2);border-radius:14px;padding:20px;margin-bottom:14px;}
-
+ 
 /* ── Pills / badges ── */
 .pill{display:inline-block;font-size:11px;font-weight:600;padding:3px 9px;border-radius:6px;letter-spacing:.02em;}
 .pill-easy{background:var(--green-bg);border:1px solid var(--green);color:var(--green);}
@@ -56,7 +56,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);fon
 .pill-gym{background:var(--teal-bg);border:1px solid var(--teal);color:var(--teal);}
 .pill-rest{background:var(--border);border:1px solid var(--border2);color:var(--muted);}
 .badge{display:inline-block;font-size:10px;font-weight:600;padding:2px 7px;border-radius:10px;}
-
+ 
 /* ── Checkboxes ── */
 .cb-row{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);}
 .cb-row:last-child{border-bottom:none;}
@@ -65,17 +65,32 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);fon
 .cb-row.done label{text-decoration:line-through;color:var(--muted);}
 .cb-row .cb-detail{display:block;font-size:11px;color:var(--faint);margin-top:1px;line-height:1.4;}
 .cb-badge{font-size:10px;font-weight:600;padding:2px 7px;border-radius:8px;white-space:nowrap;flex-shrink:0;margin-top:1px;}
-
+ 
+/* ── Inline checklist (no border rows) ── */
+.check-list{list-style:none;padding:0;margin:0;}
+.check-list li{display:flex;align-items:flex-start;gap:8px;padding:5px 0;font-size:13px;line-height:1.5;color:var(--text);}
+.check-list li::before{content:'·';color:var(--green);font-size:18px;line-height:1.1;flex-shrink:0;}
+ 
+/* ── Traffic light system ── */
+.light-block{border-radius:10px;padding:12px 14px;margin-bottom:8px;}
+.light-green{background:var(--green-bg);border:1px solid var(--green)33;}
+.light-amber{background:var(--amber-bg);border:1px solid var(--amber)33;}
+.light-red{background:var(--red-bg);border:1px solid var(--red)33;}
+.light-label{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;margin-bottom:6px;}
+.light-label-green{color:var(--green);}
+.light-label-amber{color:var(--amber);}
+.light-label-red{color:#E88888;}
+ 
 /* ── Progress bar ── */
 .pbar-wrap{height:6px;background:var(--border2);border-radius:3px;overflow:hidden;}
 .pbar-fill{height:100%;border-radius:3px;transition:width .5s;}
-
+ 
 /* ── Stat grid ── */
 .stat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;margin-bottom:14px;}
 .stat-card{background:var(--card2);border-radius:10px;padding:12px 14px;}
 .stat-val{font-size:22px;font-weight:700;line-height:1;margin-bottom:3px;}
 .stat-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;}
-
+ 
 /* ── Week grid ── */
 .week-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:14px;}
 .day-cell{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:10px 8px;cursor:pointer;transition:border-color .15s;}
@@ -84,7 +99,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);fon
 .day-cell.done-cell{background:var(--green-dim);}
 .day-name-sm{font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px;}
 .day-session{font-size:11px;font-weight:500;line-height:1.3;}
-
+ 
 /* ── Full plan table ── */
 .plan-week-row{background:var(--card);border:1px solid var(--border);border-radius:10px;margin-bottom:6px;overflow:hidden;}
 .plan-week-header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;cursor:pointer;gap:8px;}
@@ -94,26 +109,30 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);fon
 .plan-days-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:10px;}
 .plan-day{background:var(--card2);border-radius:7px;padding:8px 6px;}
 .plan-day-name{font-size:9px;font-weight:600;color:var(--faint);text-transform:uppercase;margin-bottom:4px;}
-
+ 
 /* ── Textarea ── */
 textarea{width:100%;background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);resize:vertical;min-height:56px;line-height:1.5;}
 textarea:focus{outline:none;border-color:var(--green);}
 textarea::placeholder{color:var(--faint);}
-
+ 
 /* ── Buttons ── */
 .btn{padding:8px 16px;border-radius:8px;border:1px solid var(--border2);font-family:inherit;font-size:13px;font-weight:500;cursor:pointer;background:var(--card2);color:var(--text);transition:all .15s;}
 .btn:hover{border-color:var(--green);color:var(--green);}
 .btn-green{background:var(--green);color:#060E09;border-color:var(--green);}
 .btn-green:hover{background:#3DE89C;border-color:#3DE89C;color:#060E09;}
 .btn-sm{padding:5px 11px;font-size:11px;border-radius:6px;}
-
+ 
 /* ── Alert ── */
 .alert{border-left:2px solid var(--red);background:var(--red-bg);border-radius:0 8px 8px 0;padding:10px 14px;font-size:13px;color:#E88888;line-height:1.6;margin-bottom:10px;}
-
+ 
 /* ── Section heading ── */
 .sec-h{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:10px;margin-top:20px;}
 .sec-h:first-child{margin-top:0;}
-
+ 
+/* ── Intro banner ── */
+.intro-banner{background:var(--card2);border:1px solid var(--border2);border-radius:10px;padding:14px 16px;margin-bottom:14px;font-size:13px;color:var(--muted);line-height:1.7;font-style:italic;}
+.intro-banner strong{color:var(--text);font-style:normal;}
+ 
 /* ── Meal card ── */
 .meal-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
 @media(max-width:520px){.meal-grid{grid-template-columns:1fr;}}
@@ -124,29 +143,60 @@ textarea::placeholder{color:var(--faint);}
 .macro-chip{font-size:10px;background:var(--border);color:var(--muted);padding:2px 7px;border-radius:5px;}
 .carb-swap{font-size:11px;color:var(--blue);background:var(--blue-bg);border-radius:5px;padding:4px 8px;margin-top:6px;display:inline-block;}
 .whey-tag{font-size:10px;font-weight:600;background:var(--pink-bg);color:var(--pink);padding:2px 7px;border-radius:5px;margin-left:3px;}
-
+ 
 /* ── Injury badge colours ── */
 .cb-ankle{background:var(--amber-bg);color:var(--amber);}
 .cb-knee{background:var(--blue-bg);color:var(--blue);}
 .cb-both{background:var(--purple-bg);color:var(--purple);}
-
+ 
 /* ── Streak dots ── */
 .streak-dots{display:flex;gap:4px;flex-wrap:wrap;}
 .dot{width:10px;height:10px;border-radius:50%;background:var(--border2);}
 .dot.filled{background:var(--green);}
-
+ 
 /* ── Weight chart ── */
 .weight-entries{display:flex;flex-direction:column;gap:4px;max-height:200px;overflow-y:auto;}
 .weight-entry{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;background:var(--card2);border-radius:7px;font-size:13px;}
 .weight-del{background:none;border:none;color:var(--faint);cursor:pointer;font-size:14px;padding:0 4px;}
 .weight-del:hover{color:var(--red);}
-
+ 
 /* ── Race countdown ── */
 .race-banner{background:linear-gradient(135deg,var(--coral-bg),var(--amber-bg));border:1px solid var(--coral);border-radius:14px;padding:20px;margin-bottom:14px;text-align:center;}
-
+ 
 /* ── Phase indicator ── */
 .phase-tag{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;}
-
+ 
+/* ── Info row ── */
+.info-row{display:flex;justify-content:space-between;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--border);gap:12px;}
+.info-row:last-child{border-bottom:none;}
+.info-row-label{font-size:12px;color:var(--muted);flex-shrink:0;min-width:90px;}
+.info-row-val{font-size:13px;color:var(--text);text-align:right;line-height:1.5;}
+ 
+/* ── Override / skipped indicator ── */
+.day-cell.overridden{border-color:var(--amber);}
+.day-cell.skipped-cell{opacity:.5;}
+.override-tag{font-size:9px;font-weight:700;color:var(--amber);letter-spacing:.04em;text-transform:uppercase;margin-top:3px;}
+.deferred-tag{font-size:9px;font-weight:700;color:var(--blue);letter-spacing:.04em;text-transform:uppercase;margin-top:3px;}
+.skipped-tag{font-size:9px;font-weight:700;color:var(--faint);letter-spacing:.04em;text-transform:uppercase;margin-top:3px;}
+ 
+/* ── Modal overlay ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:100;display:flex;align-items:flex-end;justify-content:center;padding:0;}
+.modal-overlay.hidden{display:none;}
+.modal-sheet{background:var(--card);border-radius:18px 18px 0 0;padding:24px 20px 36px;width:100%;max-width:520px;max-height:85vh;overflow-y:auto;}
+.modal-handle{width:36px;height:4px;background:var(--border2);border-radius:2px;margin:0 auto 20px;}
+.modal-title{font-size:17px;font-weight:700;margin-bottom:4px;}
+.modal-sub{font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.5;}
+.modal-section{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:8px;margin-top:16px;}
+.modal-section:first-of-type{margin-top:0;}
+.session-type-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:4px;}
+.session-type-btn{padding:10px 8px;border-radius:10px;border:1px solid var(--border2);background:var(--card2);font-family:inherit;font-size:12px;font-weight:500;color:var(--text);cursor:pointer;text-align:center;transition:all .15s;}
+.session-type-btn:hover,.session-type-btn.selected{border-color:var(--amber);color:var(--amber);background:var(--amber-bg);}
+.modal-actions{display:flex;gap:8px;margin-top:20px;flex-wrap:wrap;}
+.modal-actions .btn{flex:1;}
+.persist-toggle{display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--card2);border:1px solid var(--border);border-radius:10px;cursor:pointer;margin-bottom:4px;}
+.persist-toggle input[type=checkbox]{width:16px;height:16px;accent-color:var(--amber);flex-shrink:0;}
+.persist-toggle label{font-size:13px;cursor:pointer;line-height:1.4;}
+ 
 /* ── Responsive ── */
 @media(max-width:600px){
   .week-grid{grid-template-columns:repeat(7,1fr);gap:3px;}
@@ -157,7 +207,7 @@ textarea::placeholder{color:var(--faint);}
 </style>
 </head>
 <body>
-
+ 
 <nav class="nav" id="nav">
   <button class="nav-btn active" onclick="nav('today')">Today</button>
   <button class="nav-btn" onclick="nav('week')">This week</button>
@@ -166,29 +216,74 @@ textarea::placeholder{color:var(--faint);}
   <button class="nav-btn" onclick="nav('injury')">Injury</button>
   <button class="nav-btn" onclick="nav('progress')">Progress</button>
 </nav>
-
+ 
 <div class="main">
-
+ 
 <!-- ════════════════ TODAY ════════════════ -->
 <div class="section active" id="sec-today"></div>
-
+ 
 <!-- ════════════════ THIS WEEK ════════════════ -->
 <div class="section" id="sec-week"></div>
-
+ 
 <!-- ════════════════ FULL PLAN ════════════════ -->
 <div class="section" id="sec-plan"></div>
-
+ 
 <!-- ════════════════ DIET ════════════════ -->
 <div class="section" id="sec-diet"></div>
-
+ 
 <!-- ════════════════ INJURY ════════════════ -->
 <div class="section" id="sec-injury"></div>
-
+ 
 <!-- ════════════════ PROGRESS ════════════════ -->
 <div class="section" id="sec-progress"></div>
-
+ 
 </div>
-
+ 
+<!-- ════════════════ SESSION OVERRIDE MODAL ════════════════ -->
+<div class="modal-overlay hidden" id="override-modal" onclick="closeOverrideModal(event)">
+  <div class="modal-sheet" id="override-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="om-title">Adjust session</div>
+    <div class="modal-sub" id="om-sub">Choose what to do with this session</div>
+ 
+    <div class="modal-section">Change session type to</div>
+    <div class="session-type-grid" id="om-type-grid">
+      <button class="session-type-btn" onclick="selectOverrideType('easy')">Easy run</button>
+      <button class="session-type-btn" onclick="selectOverrideType('tempo')">Tempo</button>
+      <button class="session-type-btn" onclick="selectOverrideType('intv')">Intervals</button>
+      <button class="session-type-btn" onclick="selectOverrideType('long')">Long run</button>
+      <button class="session-type-btn" onclick="selectOverrideType('gym')">Gym</button>
+      <button class="session-type-btn" onclick="selectOverrideType('rest')">Rest / off</button>
+    </div>
+ 
+    <div class="modal-section" style="margin-top:14px">Or mark as</div>
+    <div style="display:flex;gap:8px;margin-bottom:4px;flex-wrap:wrap">
+      <button class="session-type-btn" onclick="selectOverrideType('skipped')" style="flex:1">Skipped</button>
+      <button class="session-type-btn" onclick="selectOverrideType('deferred')" style="flex:1">Deferred</button>
+    </div>
+ 
+    <div class="modal-section" style="margin-top:14px">Swap with another day this week?</div>
+    <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:4px" id="om-swap-grid"></div>
+    <div style="font-size:11px;color:var(--faint);margin-bottom:4px" id="om-swap-hint">Tap a day to swap sessions with it</div>
+ 
+    <div class="modal-section" style="margin-top:14px">How long should this last?</div>
+    <div class="persist-toggle" onclick="document.getElementById('om-persist').click()">
+      <input type="checkbox" id="om-persist">
+      <label for="om-persist"><strong>Save until I undo it</strong> — otherwise resets at midnight</label>
+    </div>
+ 
+    <div id="om-existing-override" style="display:none;margin-top:12px">
+      <div style="font-size:12px;color:var(--amber);background:var(--amber-bg);border-radius:8px;padding:10px 12px;margin-bottom:8px" id="om-existing-text"></div>
+      <button class="btn btn-sm" onclick="clearOverride()" style="color:var(--coral);border-color:var(--coral)33;width:100%">Remove override — restore original session</button>
+    </div>
+ 
+    <div class="modal-actions">
+      <button class="btn" onclick="closeOverrideModal()">Cancel</button>
+      <button class="btn btn-green" onclick="applyOverride()" id="om-apply-btn">Apply change</button>
+    </div>
+  </div>
+</div>
+ 
 <script>
 // ═══════════════════════════════════════════════════════════════
 // DATA
@@ -198,16 +293,16 @@ const RACE_DATE  = new Date('2026-09-06');
 const DAY_NAMES  = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 const DAY_FULL   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 const CTX        = ['WFH 9–5:30','Office/gym 7:30pm','WFH (free am)','Office/gym 7:30pm','WFH 9–5:30','Free','Rest day'];
-
+ 
 const PHASES = [
   {id:1,name:'Base',color:'#44C8A8',dim:'#0A2820',weeks:[1,6]},
   {id:2,name:'Build',color:'#4A9EE8',dim:'#0A1E38',weeks:[7,13]},
   {id:3,name:'Peak',color:'#E8A844',dim:'#2A1E08',weeks:[14,20]},
   {id:4,name:'Taper',color:'#E86A44',dim:'#2A1208',weeks:[21,24]},
 ];
-
+ 
 function getPhase(wk){return PHASES.find(p=>wk>=p.weeks[0]&&wk<=p.weeks[1])||PHASES[0];}
-
+ 
 // [Mon,Tue,Wed,Thu,Fri,Sat,Sun] for each week
 const WEEKS=[
   {wk:1,dates:'23–29 Mar',vol:'~14mi',rec:false,days:[
@@ -403,8 +498,373 @@ const WEEKS=[
     {t:'rest',d:'Full rest'},
     {t:'race',d:'RACE DAY — sub-50:00!'}]},
 ];
-
-// Diet data (per weekday, 0=Mon)
+ 
+// ─── Structured session details for interval + tempo days ───
+// Keyed by week index (0-based) + day index: "wi_di"
+// wu=warm-up, reps=rep structure, rec=recovery, cd=cool-down, feel=effort cues, ifbad=fallback
+const SESSION_DETAILS = {
+  // Wk5 Fri — first tempo
+  '4_4': { type:'tempo', title:'Tempo intro — 2mi @ 8:35',
+    wu:'1.5mi easy (9:30–10:00 /mi). Start very gently. This should feel almost embarrassingly slow. Give yourself 12–15 minutes to warm up properly — do not rush it.',
+    reps:[{label:'2mi tempo',pace:'8:35 /mi',note:'Threshold effort — controlled discomfort. You should be able to say a single word but not a sentence. This is not a sprint.'}],
+    rec:'N/A — sustained tempo, no rest intervals.',
+    cd:'1mi easy (9:30–10:00 /mi). Slow right down immediately. Keep moving for at least 8 minutes. Do not stop dead.',
+    feel:'Warm-up: barely working. Tempo: uncomfortable but manageable — you could hold this for longer if you had to. Cool-down: easy and recovering.',
+    ifbad:'If 8:35 feels too hard in the first half mile, drop to 8:45–8:50. Do not abandon the session — just dial it back and finish the distance.' },
+ 
+  // Wk6 Fri — recovery tempo
+  '5_4': { type:'tempo', title:'Recovery week tempo — 1.5mi @ threshold',
+    wu:'1mi easy. Relaxed, slow, no pressure. This is a recovery week — the session is short by design.',
+    reps:[{label:'1.5mi tempo',pace:'8:35–8:45 /mi',note:'Lighter than usual — this is maintenance, not a push. Just remind your legs what tempo feels like.'}],
+    rec:'N/A.',
+    cd:'2.5mi easy cooldown — longer than usual. Use it. This week is about flushing the legs, not building fitness.',
+    feel:'Should feel noticeably easier than Week 5. If it does not, something is off — back off.',
+    ifbad:'Shorten to 1mi tempo and extend the cool-down. Fine for a recovery week.' },
+ 
+  // Wk7 Fri — tempo
+  '6_4': { type:'tempo', title:'Tempo — 2.5mi @ 8:20',
+    wu:'1mi easy. At least 8 minutes. Do not start the tempo until you feel genuinely loose.',
+    reps:[{label:'2.5mi tempo',pace:'8:20 /mi',note:'Slightly faster than the base phase. Should feel hard but controlled — not desperate.'}],
+    rec:'N/A.',
+    cd:'1mi easy.',
+    feel:'8:20 is meaningfully harder than 8:35. Expect the first half mile to feel sharp. It usually settles by mile 1.',
+    ifbad:'Hold 8:30 if 8:20 is not there. Do not fight the pace — a slightly slower tempo is still a tempo.' },
+ 
+  // Wk7 Sat — first interval session
+  '6_5': { type:'intv', title:'6 × 0.4mi @ 7:45',
+    wu:'1mi easy jog + 4×100m strides (80% effort, relaxed). Give yourself 10–12 minutes total. The strides prep your legs for the faster pace — do not skip them.',
+    reps:[
+      {label:'Rep 1 of 6',pace:'7:45 /mi',note:'Start controlled. This rep should feel like 7/10 effort — not a sprint, not easy.'},
+      {label:'Rep 2 of 6',pace:'7:45 /mi',note:'Finding your rhythm. If rep 1 felt comfortable, stay at pace. If it felt hard, back off slightly to 7:50.'},
+      {label:'Reps 3–4',pace:'7:45 /mi',note:'The middle reps. Stay focused. Effort should feel consistent — not escalating.'},
+      {label:'Reps 5–6',pace:'7:45 /mi',note:'Last two. You can push slightly harder here if you have it. Do not die on rep 5 and drag through rep 6.'},
+    ],
+    rec:'90 seconds easy jog between each rep. Keep moving — do not walk or stop. The jog recovery is part of the session.',
+    cd:'0.5mi easy jog minimum. Walk the last few minutes if needed.',
+    feel:'Each rep: focused, slightly uncomfortable, but controlled. Recovery jog: genuinely easy — use it to breathe. If reps feel desperate from rep 2, you went out too hard.',
+    ifbad:'Drop to 5 reps or ease to 7:55 /mi. A controlled 5-rep session beats a ragged 6-rep one.' },
+ 
+  // Wk8 Fri — tempo
+  '7_4': { type:'tempo', title:'Tempo — 2.5mi @ 8:20',
+    wu:'1.5mi easy. A little longer warm-up this week — the tempo block is the same but fatigue may be higher.',
+    reps:[{label:'2.5mi tempo',pace:'8:20 /mi',note:'Same as last week. If it felt manageable then, it should feel slightly more comfortable now. That\'s adaptation.'}],
+    rec:'N/A.',
+    cd:'1mi easy.',
+    feel:'By now 8:20 should feel like a known effort, not a surprise. Trust that.',
+    ifbad:'Hold 8:25–8:30 and do the full distance. Pace matters less than completing the block.' },
+ 
+  // Wk8 Sat — intervals
+  '7_5': { type:'intv', title:'5 × 0.5mi @ 7:45',
+    wu:'1mi easy jog + 4×100m strides.',
+    reps:[
+      {label:'Rep 1 of 5',pace:'7:45 /mi',note:'Slightly longer than last week\'s reps. Settle into rhythm by 200m.'},
+      {label:'Reps 2–3',pace:'7:45 /mi',note:'Middle reps — hold steady. Breathing should be hard but rhythmic.'},
+      {label:'Reps 4–5',pace:'7:45 /mi',note:'Final push. Rep 5 should take something from you. That\'s correct.'},
+    ],
+    rec:'2 minutes easy jog between each rep.',
+    cd:'0.5mi easy.',
+    feel:'Longer reps mean more time at effort. Expect the back half of each rep to feel harder than the first. That\'s the point.',
+    ifbad:'Drop to 4 reps. The extra volume is not worth it if form is collapsing.' },
+ 
+  // Wk9 Fri — tempo
+  '8_4': { type:'tempo', title:'Tempo — 3mi @ 8:20',
+    wu:'1.5mi easy.',
+    reps:[{label:'3mi tempo',pace:'8:20 /mi',note:'First time hitting 3 continuous miles at tempo. This is a step up. Start slightly conservatively — 8:25 for the first mile is fine.'}],
+    rec:'N/A.',
+    cd:'0.5mi easy — shorter, but make sure you at least jog out.',
+    feel:'Mile 1: finding your legs. Mile 2: in the work. Mile 3: holding on — that\'s supposed to feel hard by the end.',
+    ifbad:'Run 2.5mi tempo and extend the cool-down. 3mi is a target, not a requirement this early.' },
+ 
+  // Wk9 Sat — intervals
+  '8_5': { type:'intv', title:'4 × 0.6mi @ 7:45',
+    wu:'1mi easy + strides.',
+    reps:[
+      {label:'Rep 1 of 4',pace:'7:45 /mi',note:'Longer rep again. Start controlled — the first 200m should feel almost comfortable.'},
+      {label:'Rep 2 of 4',pace:'7:45 /mi',note:'Keep the effort honest. Do not drift faster — the goal is consistency across all 4.'},
+      {label:'Rep 3 of 4',pace:'7:45 /mi',note:'This is where it gets hard. Hold the pace rather than the feeling.'},
+      {label:'Rep 4 of 4',pace:'7:45 /mi',note:'Last rep. Give it what you have — controlled, not panicked.'},
+    ],
+    rec:'2 minutes easy jog.',
+    cd:'0.5mi easy jog.',
+    feel:'0.6mi reps are long enough that the middle section feels like a grind. That\'s normal. The recovery is intentionally short enough that you arrive at the next rep not fully fresh.',
+    ifbad:'3 reps is a solid session. Stop there if rep 3 was very hard.' },
+ 
+  // Wk10 Sat — recovery intervals
+  '9_5': { type:'intv', title:'5 × 0.4mi — relaxed',
+    wu:'1mi easy. No strides needed this week.',
+    reps:[{label:'5 × 0.4mi',pace:'8:00–8:10 /mi',note:'Recovery week — run these at a relaxed, controlled effort. Not tempo, not sprinting. Think of it as fast-feeling easy running.'}],
+    rec:'90 seconds easy jog.',
+    cd:'0.5mi easy.',
+    feel:'Everything should feel easier this week. If it does not, you need more rest, not more effort.',
+    ifbad:'4 reps and go home. This is a recovery week — less is more.' },
+ 
+  // Wk11 Fri — tempo
+  '10_4': { type:'tempo', title:'Tempo — 3mi @ 8:10',
+    wu:'1.5mi easy.',
+    reps:[{label:'3mi tempo',pace:'8:10 /mi',note:'Stepping up from 8:20 to 8:10 — a meaningful jump. The first mile may feel sharp. Stay patient.'}],
+    rec:'N/A.',
+    cd:'1mi easy.',
+    feel:'8:10 is closer to race pace territory. Expect it to feel harder than 8:20 even though it\'s only 10 seconds per mile. That\'s correct.',
+    ifbad:'Hold 8:15–8:20 for the full 3mi rather than struggling at 8:10. Completing the block matters more.' },
+ 
+  // Wk11 Sat — intervals
+  '10_5': { type:'intv', title:'6 × 0.5mi @ 7:45',
+    wu:'1mi easy + strides.',
+    reps:[
+      {label:'Reps 1–2',pace:'7:45 /mi',note:'Getting going. Should feel controlled.'},
+      {label:'Reps 3–4',pace:'7:45 /mi',note:'Middle section — stay consistent. This is the work.'},
+      {label:'Reps 5–6',pace:'7:45 /mi',note:'Final two. You\'ve done this before. Hold pace not feeling.'},
+    ],
+    rec:'90 seconds easy jog — shorter than before. The reduced recovery is intentional.',
+    cd:'0.5mi easy.',
+    feel:'6 reps with 90s recovery is harder than 5 reps with 2min. Expect to feel it by rep 4.',
+    ifbad:'5 reps with 90s is still a very solid session. Stop there if needed.' },
+ 
+  // Wk12 Fri — tempo
+  '11_4': { type:'tempo', title:'Tempo — 3mi @ 8:10',
+    wu:'1.5mi easy.',
+    reps:[{label:'3mi tempo',pace:'8:10 /mi',note:'Second week at this pace. Should feel slightly more familiar than last week. If it does not, your body is telling you something — back off.'}],
+    rec:'N/A.',
+    cd:'1mi easy.',
+    feel:'If last week felt very hard, aim for 8:12–8:15 this week. Consistency over weeks matters more than hitting the exact number.',
+    ifbad:'Back off to 8:15–8:20 and finish the distance.' },
+ 
+  // Wk12 Sat — cruise intervals
+  '11_5': { type:'intv', title:'3 × 1.25mi @ 7:55',
+    wu:'1mi easy + strides.',
+    reps:[
+      {label:'Rep 1 of 3',pace:'7:55 /mi',note:'Much longer rep. Start conservatively — the first 0.5mi should feel like hard tempo, not a sprint.'},
+      {label:'Rep 2 of 3',pace:'7:55 /mi',note:'This is the hardest rep mentally. Stay focused. Break it into thirds in your head.'},
+      {label:'Rep 3 of 3',pace:'7:55 /mi',note:'Last one. Everything you\'ve got — controlled to the end.'},
+    ],
+    rec:'3 minutes easy jog — longer recovery to allow real restoration between very long reps.',
+    cd:'0.5mi easy.',
+    feel:'1.25mi reps feel closer to tempo than intervals. The effort should build within each rep — start at 7/10 and finish at 8.5/10.',
+    ifbad:'2 reps completed well is better than 3 reps done badly. Stop after rep 2 if needed.' },
+ 
+  // Wk13 Sat — recovery
+  '12_5': { type:'intv', title:'4 × 0.5mi — comfortable',
+    wu:'1mi easy.',
+    reps:[{label:'4 × 0.5mi',pace:'8:00–8:10 /mi',note:'Recovery week. Run these feeling controlled and comfortable — not easy, but not hard either.'}],
+    rec:'2 minutes easy jog.',
+    cd:'0.5mi easy.',
+    feel:'Legs should feel fresher than the last two weeks. If they don\'t, rest more.',
+    ifbad:'3 reps and stop. Recovery week.' },
+ 
+  // Wk14 Fri — tempo
+  '13_4': { type:'tempo', title:'Tempo — 3.5mi @ 8:10',
+    wu:'1.5mi easy.',
+    reps:[{label:'3.5mi tempo',pace:'8:10 /mi',note:'First time at 3.5mi continuous tempo. Same pace as before but more volume. Pace discipline early is everything.'}],
+    rec:'N/A.',
+    cd:'1mi easy.',
+    feel:'Mile 1: settling in. Miles 2–3: in the effort. Final half mile: hold on — this is supposed to be hard.',
+    ifbad:'Complete 3mi at pace and run the last 0.5mi at 8:20. That\'s still a strong session.' },
+ 
+  // Wk14 Sat — peak intervals
+  '13_5': { type:'intv', title:'8 × 0.4mi @ 7:40',
+    wu:'1mi easy + strides.',
+    reps:[
+      {label:'Reps 1–2',pace:'7:40 /mi',note:'First time at 7:40. Start controlled. This pace is faster than 10K goal pace — do not sprint.'},
+      {label:'Reps 3–5',pace:'7:40 /mi',note:'Middle block. Consistent effort. The short rep length helps — each one is over quickly.'},
+      {label:'Reps 6–8',pace:'7:40 /mi',note:'Final block. Push through. Rep 8 should take real focus to finish at pace.'},
+    ],
+    rec:'90 seconds easy jog. Active recovery — keep the legs moving.',
+    cd:'0.5mi easy.',
+    feel:'7:40 will feel sharp. It is supposed to. These reps are fast enough to recruit muscle fibres you don\'t use in tempo work. Short, controlled, and focused.',
+    ifbad:'6 reps at 7:40 is a solid session. Or complete 8 at 7:50. Do not struggle through 8 at any cost.' },
+ 
+  // Wk15 Fri — race pace tempo
+  '14_4': { type:'tempo', title:'Race pace work — 2mi @ 8:03',
+    wu:'1.5mi easy + 4×100m strides.',
+    reps:[{label:'2mi @ race pace',pace:'8:03 /mi',note:'First time running at actual goal pace in a tempo context. This is supposed to feel hard but not desperate. If it feels impossible, the pace will come with fitness — do not panic.'}],
+    rec:'N/A.',
+    cd:'2.5mi easy — use the extra cool-down to process how it felt.',
+    feel:'8:03 is the goal. This is what you\'re training towards. Note how it feels — that feeling will get more familiar over the next 8 weeks.',
+    ifbad:'8:10 for 2mi is still excellent race pace prep. Run the effort, not the number, if needed.' },
+ 
+  // Wk15 Sat — intervals
+  '14_5': { type:'intv', title:'5 × 0.6mi @ 7:45',
+    wu:'1mi easy + strides.',
+    reps:[
+      {label:'Reps 1–2',pace:'7:45 /mi',note:'Back at 7:45 after 7:40 last week. Should feel slightly more comfortable by comparison.'},
+      {label:'Reps 3–4',pace:'7:45 /mi',note:'Sustain the effort. Consistent pace across all 5 is the goal.'},
+      {label:'Rep 5',pace:'7:45 /mi',note:'Strong finish. Leave nothing on the table.'},
+    ],
+    rec:'2 minutes easy jog.',
+    cd:'0.5mi easy.',
+    feel:'0.6mi reps give you time to find your stride. First 0.2mi feels hardest — it gets easier by the midpoint then hard again at the end.',
+    ifbad:'4 reps and a good cool-down. That\'s enough.' },
+ 
+  // Wk16 Sat — recovery
+  '15_5': { type:'intv', title:'4 × 0.5mi — comfortable',
+    wu:'1mi easy.',
+    reps:[{label:'4 × 0.5mi',pace:'8:00–8:10 /mi',note:'Recovery week. Shake out the legs without taxing them.'}],
+    rec:'2 minutes easy jog.',
+    cd:'0.5mi easy.',
+    feel:'These should feel noticeably easier than the last 3 weeks. If they don\'t, rest more.',
+    ifbad:'3 reps. Go home.' },
+ 
+  // Wk17 Fri — race pace tempo
+  '16_4': { type:'tempo', title:'Race pace tempo — 3mi @ 8:03',
+    wu:'1.5mi easy + strides.',
+    reps:[{label:'3mi @ race pace',pace:'8:03 /mi',note:'3 miles at goal pace. This is a significant session. Warm up well. Start the first mile at 8:05–8:08 and settle.'}],
+    rec:'N/A.',
+    cd:'2mi easy.',
+    feel:'By now 8:03 should feel hard but not shocking. If the first mile settles after the initial effort, that\'s adaptation working.',
+    ifbad:'2mi at race pace + 1mi at 8:15–8:20. Still a meaningful race pace block.' },
+ 
+  // Wk17 Sat — complex intervals
+  '16_5': { type:'intv', title:'2 × (4 × 0.4mi) @ 7:40',
+    wu:'1mi easy + strides.',
+    reps:[
+      {label:'Set 1: 4 × 0.4mi',pace:'7:40 /mi',note:'First set of 4. 60 seconds between reps — very short. Stay controlled. These should feel fast but not desperate.'},
+      {label:'3 min rest between sets',pace:'—',note:'Full 3-minute easy jog between the two sets. Use it properly — this is your chance to reset.'},
+      {label:'Set 2: 4 × 0.4mi',pace:'7:40 /mi',note:'Second set. Legs will be heavier. Aim for the same pace — if you drop to 7:45–7:50, that\'s fine.'},
+    ],
+    rec:'60 seconds between reps within each set. 3 minutes between sets.',
+    cd:'0.5mi easy.',
+    feel:'The short in-set recovery (60s) makes this session cumulatively harder than it looks. Rep 3 and 4 of each set are where it counts.',
+    ifbad:'Complete set 1 fully. If set 2 feels bad from rep 1, do 2 reps and stop. 6 quality reps beats 8 poor ones.' },
+ 
+  // Wk17 Sun — long run with pace
+  // (not an interval day, skipping)
+ 
+  // Wk18 Sat — race (handled separately)
+ 
+  // Wk19 Fri — tempo
+  '18_4': { type:'tempo', title:'Tempo — 4mi @ 8:05',
+    wu:'1.5mi easy.',
+    reps:[{label:'4mi tempo',pace:'8:05 /mi',note:'4 miles at near-race pace. This is one of the hardest sessions in the plan. Treat miles 1–2 as settling, miles 3–4 as the work.'}],
+    rec:'N/A.',
+    cd:'1.5mi easy.',
+    feel:'Mile 1: sharp and uncomfortable. Mile 2: finding rhythm. Miles 3–4: this is what race day will feel like. Hold on and trust the fitness.',
+    ifbad:'3mi at 8:05 or 4mi at 8:15. Either is a solid session at this point in the plan.' },
+ 
+  // Wk19 Sat — intervals
+  '18_5': { type:'intv', title:'4 × 0.6mi @ 7:40',
+    wu:'1mi easy + strides.',
+    reps:[
+      {label:'Rep 1 of 4',pace:'7:40 /mi',note:'Sharp start. 7:40 and 0.6mi — commit from the start.'},
+      {label:'Rep 2 of 4',pace:'7:40 /mi',note:'Maintain. This is the confirmation rep.'},
+      {label:'Rep 3 of 4',pace:'7:40 /mi',note:'Dig. This rep tests your fitness more than any other.'},
+      {label:'Rep 4 of 4',pace:'7:40 /mi',note:'Last rep. All of it.'},
+    ],
+    rec:'2 minutes easy jog.',
+    cd:'0.5mi easy.',
+    feel:'7:40 at 0.6mi feels very different from 7:40 at 0.4mi. The last 0.2mi of each rep is the part that builds race toughness.',
+    ifbad:'3 reps well done. Stop there.' },
+ 
+  // Wk20 Sat — recovery
+  '19_5': { type:'intv', title:'4 × 0.5mi — comfortable',
+    wu:'1mi easy.',
+    reps:[{label:'4 × 0.5mi',pace:'8:00–8:10 /mi',note:'Recovery week after a huge training block. Run relaxed. This is restoration, not fitness building.'}],
+    rec:'2 minutes easy jog.',
+    cd:'0.5mi easy.',
+    feel:'Should feel noticeably easier than any session in the last 4 weeks. If not, rest more before the taper phase.',
+    ifbad:'3 reps.' },
+ 
+  // Wk21 Fri — taper tempo
+  '20_4': { type:'tempo', title:'Taper tempo — 3mi @ threshold',
+    wu:'1.5mi easy.',
+    reps:[{label:'3mi tempo',pace:'8:10–8:15 /mi',note:'Taper phase — slightly backed off from peak. Keep the sharpness without adding fatigue.'}],
+    rec:'N/A.',
+    cd:'1mi easy.',
+    feel:'Should feel controlled and confident. If it feels hard, back off — the taper is working and you don\'t need to force fitness now.',
+    ifbad:'2mi tempo and go home. You\'re in the taper.' },
+ 
+  // Wk21 Sat — taper intervals
+  '20_5': { type:'intv', title:'5 × 0.5mi @ 7:45',
+    wu:'1mi easy + strides.',
+    reps:[{label:'5 × 0.5mi',pace:'7:45 /mi',note:'Taper volume — same pace, fewer reps than peak. Keep the legs sharp.'}],
+    rec:'90 seconds easy jog.',
+    cd:'0.5mi easy.',
+    feel:'Legs should feel relatively fresh. These should feel challenging but not exhausting.',
+    ifbad:'4 reps. You\'re in the taper — protect the legs.' },
+ 
+  // Wk22 Fri — taper tempo
+  '21_4': { type:'tempo', title:'Taper tempo — 2mi @ threshold',
+    wu:'1.5mi easy.',
+    reps:[{label:'2mi tempo',pace:'8:15–8:20 /mi',note:'Short and sharp. Just a reminder to the legs of what fast feels like.'}],
+    rec:'N/A.',
+    cd:'1mi easy.',
+    feel:'Quick, controlled, done. This session should leave you feeling good, not depleted.',
+    ifbad:'1.5mi tempo is fine. You do not need a big session this week.' },
+ 
+  // Wk22 Sat — taper intervals
+  '21_5': { type:'intv', title:'4 × 0.5mi @ 7:45',
+    wu:'1mi easy + strides.',
+    reps:[{label:'4 × 0.5mi',pace:'7:45 /mi',note:'Keeping the legs sharp in the final weeks. Do not push harder than the pace — the goal is maintenance.'}],
+    rec:'2 minutes easy jog.',
+    cd:'0.5mi easy.',
+    feel:'Controlled and sharp. Leave the session feeling like you had more in you.',
+    ifbad:'3 reps. Taper.' },
+ 
+  // Wk23 Fri — race pace
+  '22_4': { type:'tempo', title:'Final race pace session — 2mi @ 8:03',
+    wu:'1mi easy + strides.',
+    reps:[{label:'2mi @ race pace',pace:'8:03 /mi',note:'This is the last proper quality session before race day. It should feel controlled, familiar, and confident. This pace is yours now.'}],
+    rec:'N/A.',
+    cd:'0.5mi easy.',
+    feel:'8:03 should feel known. Not comfortable exactly, but familiar. Trust what you feel here — it will be the same on race day.',
+    ifbad:'1.5mi at race pace and stop. Do not burn matches this close to the race.' },
+ 
+  // Wk23 Sat — final intervals
+  '22_5': { type:'intv', title:'3 × 0.5mi @ 7:40',
+    wu:'1mi easy + strides.',
+    reps:[
+      {label:'Rep 1',pace:'7:40 /mi',note:'Sharp and controlled.'},
+      {label:'Rep 2',pace:'7:40 /mi',note:'Confident. You\'ve done this many times.'},
+      {label:'Rep 3',pace:'7:40 /mi',note:'Last hard rep of the plan. Make it count.'},
+    ],
+    rec:'2 minutes easy jog.',
+    cd:'0.5mi easy.',
+    feel:'Fast and sharp. These should feel quick and controlled — if they feel desperate, ease back. You cannot build fitness in the final week.',
+    ifbad:'2 reps and stop.' },
+};
+ 
+// Renders the structured detail card for interval/tempo sessions
+function renderSessionDetail(wi, di) {
+  const key = `${wi}_${di}`;
+  const d = SESSION_DETAILS[key];
+  if (!d) return '';
+  const isIntv = d.type === 'intv';
+  const accentColor = isIntv ? 'var(--amber)' : 'var(--blue)';
+  const accentBg    = isIntv ? 'var(--amber-bg)' : 'var(--blue-bg)';
+  const accentDim   = isIntv ? '#C8963A' : '#3A7AB8';
+ 
+  const repsHtml = d.reps.map((r, i) => `
+    <div style="display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--border)">
+      <div style="min-width:90px;flex-shrink:0">
+        <div style="font-size:11px;font-weight:600;color:${accentColor}">${r.label}</div>
+        ${r.pace !== '—' ? `<div style="font-family:'DM Mono',monospace;font-size:13px;font-weight:500;color:var(--text);margin-top:2px">${r.pace}</div>` : ''}
+      </div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.5;padding-top:1px">${r.note}</div>
+    </div>`).join('');
+ 
+  return `
+  <div class="sec-h">Session breakdown</div>
+  <div class="card" style="border-color:${accentColor}33;margin-bottom:10px">
+    <div style="font-size:15px;font-weight:700;color:${accentColor};margin-bottom:14px">${d.title}</div>
+ 
+    <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:6px">Warm-up</div>
+    <div style="font-size:13px;line-height:1.6;color:var(--text);background:var(--card2);border-radius:8px;padding:10px 12px;margin-bottom:14px">${d.wu}</div>
+ 
+    <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:${accentColor};margin-bottom:4px">${isIntv ? 'Reps' : 'Tempo block'}</div>
+    <div style="background:${accentBg};border-radius:8px;padding:2px 12px;margin-bottom:14px">${repsHtml}</div>
+ 
+    <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:6px">Recovery between reps</div>
+    <div style="font-size:13px;line-height:1.6;color:var(--text);background:var(--card2);border-radius:8px;padding:10px 12px;margin-bottom:14px">${d.rec}</div>
+ 
+    <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:6px">Cool-down</div>
+    <div style="font-size:13px;line-height:1.6;color:var(--text);background:var(--card2);border-radius:8px;padding:10px 12px;margin-bottom:14px">${d.cd}</div>
+ 
+    <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:6px">How it should feel</div>
+    <div style="font-size:13px;line-height:1.6;color:${accentDim};background:${accentBg};border-radius:8px;padding:10px 12px;margin-bottom:14px">${d.feel}</div>
+ 
+    <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--faint);margin-bottom:6px">If it's going badly</div>
+    <div style="font-size:13px;line-height:1.6;color:var(--muted);border-left:2px solid var(--border2);padding:8px 12px">${d.ifbad}</div>
+  </div>`;
+}
 const DIET = [
   {day:'Monday',tag:'Easy run',kcal:'1,400',timing:'Run in the morning if possible → brunch 11:30',
    brunch:{food:'Oats (40g dry) with blueberries, Fage 0% (100g) stirred in & Yakult alongside',kcal:'~420 kcal',p:'P ~28g',c:'C ~55g'},
@@ -471,7 +931,7 @@ const DIET = [
    ],
    note:'No rice or potato today — lowest carb day, no training. Use Sunday afternoon to batch cook rice or boil potatoes, prep chicken and hard-boil eggs for the week ahead.'},
 ];
-
+ 
 // Injury checklists
 const INJURY_GROUPS = {
   daily:{label:'Daily ankle routine',sub:'Every morning · 5–8 min · left ankle',color:'#E8A844',
@@ -510,12 +970,12 @@ const INJURY_GROUPS = {
       {id:'be4',badge:'knee',label:'Terminal knee extensions',detail:'2×15 right leg — VMO activation'},
     ]},
 };
-
+ 
 // ═══════════════════════════════════════════════════════════════
 // STORAGE (localStorage fallback)
 // ═══════════════════════════════════════════════════════════════
 let DB = {};
-
+ 
 async function dbLoad(key) {
   try {
     const r = await window.storage.get(key);
@@ -529,7 +989,7 @@ async function dbSave(key, val) {
   try { await window.storage.set(key, s); } catch {}
   try { localStorage.setItem('app_'+key, s); } catch {}
 }
-
+ 
 async function initDB() {
   DB.sessions  = await dbLoad('sessions')  || {};
   DB.notes     = await dbLoad('notes')     || {};
@@ -537,10 +997,31 @@ async function initDB() {
   DB.diet      = await dbLoad('diet')      || {};
   DB.weights   = await dbLoad('weights')   || [];
   DB.dietNotes = await dbLoad('dietNotes') || {};
+  DB.overrides = await dbLoad('overrides') || {};
+  DB.shop      = await dbLoad('shop')      || {};
+  pruneExpiredOverrides();
 }
-
+ 
 async function saveField(field) { await dbSave(field, DB[field]); }
-
+ 
+function pruneExpiredOverrides() {
+  const dk = dateKey();
+  let changed = false;
+  Object.keys(DB.overrides).forEach(k => {
+    const ov = DB.overrides[k];
+    if (!ov.persist && ov.date !== dk) { delete DB.overrides[k]; changed = true; }
+  });
+  if (changed) saveField('overrides');
+}
+ 
+// Returns effective session for a given week+day, applying any override
+function effectiveSession(wi, di) {
+  const key = `ov_${wi}_${di}`;
+  const ov = DB.overrides[key];
+  if (ov) return Object.assign({}, WEEKS[wi].days[di], ov.session, { _overridden: true, _ovType: ov.type });
+  return WEEKS[wi].days[di];
+}
+ 
 // ═══════════════════════════════════════════════════════════════
 // HELPERS
 // ═══════════════════════════════════════════════════════════════
@@ -555,7 +1036,7 @@ function today() {
   const pct = Math.min(100, Math.max(0, days / 168 * 100));
   return { wi, planDay, dtr, pct, jsDay, days };
 }
-
+ 
 function sessionPill(t, gym, big) {
   const map = {
     easy: ['pill-easy','Easy run'],
@@ -569,7 +1050,7 @@ function sessionPill(t, gym, big) {
   const [cls, lbl] = map[t]||map.rest;
   return `<span class="pill ${cls}" style="${big?'font-size:13px;padding:5px 12px':''}">${lbl}</span>`;
 }
-
+ 
 function phaseColor(wk) {
   const p = getPhase(wk);
   return p ? p.color : '#44C8A8';
@@ -577,13 +1058,13 @@ function phaseColor(wk) {
 function getPhase(wk) {
   return PHASES.find(p => wk >= p.weeks[0] && wk <= p.weeks[1]) || PHASES[0];
 }
-
+ 
 function todayKey(wi, di) { return `w${wi}_d${di}`; }
 function dateKey() {
   const d = new Date();
   return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 }
-
+ 
 // ═══════════════════════════════════════════════════════════════
 // NAV
 // ═══════════════════════════════════════════════════════════════
@@ -594,18 +1075,18 @@ function nav(id) {
   document.getElementById('sec-'+id).classList.add('active');
   renders[id]();
 }
-
+ 
 // ═══════════════════════════════════════════════════════════════
 // RENDER — TODAY
 // ═══════════════════════════════════════════════════════════════
 function renderToday() {
   const { wi, planDay, dtr, pct, jsDay } = today();
   const week = WEEKS[wi];
-  const session = week.days[planDay];
+  const session = effectiveSession(wi, planDay);
   const phase = getPhase(wi+1);
   const dayName = DAY_FULL[jsDay];
   const dk = dateKey();
-
+ 
   // Which injury groups apply today
   const injGroups = ['daily'];
   if (session.t !== 'rest') {
@@ -618,15 +1099,67 @@ function renderToday() {
       injGroups.push('prerun');
     }
   }
-
+ 
   // Diet day (jsDay: 0=Sun→6, 1=Mon→0...)
   const dietIdx = jsDay === 0 ? 6 : jsDay - 1;
   const diet = DIET[dietIdx];
-
+ 
   const sKey = `${dk}_s`;
   const sessionDone = DB.sessions[sKey] || false;
-
+ 
+  // Session focus text
+  const focusMap = {
+    easy: 'An easy run today. The goal is time on feet at a genuinely easy pace — if you can\'t hold a full conversation, slow down. This is where recovery and aerobic base happen. Do not turn it into a moderate effort.',
+    long: 'A long run today. Run this easy and steady — not fast. The point is duration, not pace. Stay relaxed, fuel it properly, and finish feeling capable rather than emptied out.',
+    tempo: 'A quality session today. This is the most important run of the week. Warm up properly, hit the effort with intention, and cool down fully. Do not skip the warm-up. This is where your sub-50 fitness gets built.',
+    intv: 'Intervals today. Run the reps with controlled effort — focused but not panicked. The recoveries matter as much as the reps. If you\'re tired from the week, reduce reps rather than binning the session entirely.',
+    race: 'Race day. You have done the work. Run the first mile slightly slower than you think you should. Trust the pace. Hold it through the middle miles. Empty the tank in the last kilometre.',
+    gym: 'Gym today. Keep the focus on quality movement — not just getting through it. The gym supports your running; it doesn\'t compete with it. Finish energised, not destroyed.',
+    rest: 'Rest day. This is part of the plan. Let the week\'s work settle. Move gently if you want to, but do not add extra sessions. Recovery is training.',
+  };
+ 
+  const beforeMap = {
+    easy: 'Eat something before you go — even if it\'s just a couple of rice cakes. Coffee is not a substitute for food. A light snack 30 minutes before is enough for an easy run.',
+    long: 'Fuel this one properly. If the run is over 8 miles, have a small oat portion about 90 minutes before. Do not go out on empty. Bring water or plan your route around it.',
+    tempo: 'Have 2 rice cakes about 30 minutes before. Nothing heavy. Make sure you\'ve eaten properly in the 24 hours before this session — under-fuelling yesterday will show up today.',
+    intv: 'Same as tempo — a light snack 30 minutes before, nothing that will sit heavily. Make sure yesterday\'s nutrition was reasonable.',
+    race: 'Have your usual pre-run snack about 90 minutes before. Nothing new. Nothing heavy. Familiar food only.',
+    gym: 'If the gym is in the evening, eat your pre-gym snack before you leave. Do not go in underfuelled — you\'ll grind through rather than train properly.',
+    rest: 'Eat normally today. Do not slash food to compensate for resting. Rest days are when your body repairs — fuel the repair.',
+  };
+ 
+  const afterMap = {
+    easy: 'Eat your brunch within 45 minutes of finishing. Protein and carbs — oats with Fage or similar. Do not skip it because the run felt short.',
+    long: 'Get your post-run shake within 20 minutes if you have one, then brunch shortly after. Your biggest meal of the week follows your biggest run of the week.',
+    tempo: 'Eat brunch 30–45 minutes after finishing. Oats with whey stirred in works well here — fast and slow protein together. This session earns a proper meal.',
+    intv: 'Recover the same way as tempo — food within an hour, protein and carbs. Do not skip eating because you feel too tired or too virtuous.',
+    race: 'Eat a full recovery meal after. You\'ve earned it. Don\'t restrict after racing — your body needs fuel to repair.',
+    gym: 'Post-gym whey shake within 20–30 minutes if timing allows, then dinner. Do not go to bed without eating properly after an evening session.',
+    rest: 'Eat your usual meals. Protein stays consistent on rest days. Do not use today as an excuse to restrict — consistency here is what makes the training land.',
+  };
+ 
+  const mindsetMap = {
+    easy: 'Easy days are not wasted days. They are the foundation everything else is built on. Run slow on purpose.',
+    long: 'The long run is about building confidence, not chasing pace. If you finish feeling strong and steady, you\'ve done it right.',
+    tempo: 'One imperfect tempo session does not derail a training plan. One missed warm-up might. Protect the process, not just the pace.',
+    intv: 'Intervals can feel chaotic — they are supposed to be slightly uncomfortable. That discomfort is the point. Stay controlled, not panicked.',
+    race: 'You are ready. The plan has been building to this. Trust the work.',
+    gym: 'The gym is supportive, not punishing. Leave feeling capable, not broken.',
+    rest: 'Resting well is a skill. Let today be genuinely restful rather than anxious.',
+  };
+ 
+  const t = session.t;
+  const focusText = focusMap[t] || focusMap.rest;
+  const beforeText = beforeMap[t] || beforeMap.rest;
+  const afterText = afterMap[t] || afterMap.rest;
+  const mindsetText = mindsetMap[t] || mindsetMap.rest;
+ 
   let html = `
+  <!-- Intro banner -->
+  <div class="intro-banner">
+    Train with consistency. Eat to support the work. Adjust when needed. <strong>Do not let one imperfect moment become an off-plan week.</strong>
+  </div>
+ 
   <div class="header-band" style="border-color:${phase.color};background:${phase.dim}">
     <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px">
       <div>
@@ -645,24 +1178,67 @@ function renderToday() {
       </div>
     </div>
   </div>
-
-  <!-- Session -->
-  <div class="sec-h">Today's session</div>
-  <div class="card">
-    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:${session.d?'10px':'0'}">
-      <div style="display:flex;align-items:center;gap:8px">
+ 
+  <!-- Today's focus -->
+  <div class="sec-h">Today's focus</div>
+  <div class="card" style="margin-bottom:10px">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:10px">
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
         ${sessionPill(session.t, session.gym, true)}
         <span style="font-size:12px;color:var(--muted)">${CTX[planDay]}</span>
+        ${session._overridden ? `<span style="font-size:10px;font-weight:600;color:var(--amber);background:var(--amber-bg);padding:2px 7px;border-radius:5px">${session._ovType === 'skipped' ? 'SKIPPED' : session._ovType === 'deferred' ? 'DEFERRED' : 'ADJUSTED'}</span>` : ''}
       </div>
-      ${session.t !== 'rest' ? `
-      <button onclick="toggleSession('${sKey}')" style="padding:8px 18px;border-radius:8px;border:1px solid var(--green);font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;background:${sessionDone?'var(--green-dim)':'var(--green)'};color:${sessionDone?'var(--green)':'#060E09'};transition:all .15s">
-        ${sessionDone ? '✓ Done' : 'Mark done'}
-      </button>` : ''}
+      <button onclick="openOverrideModal(${wi},${planDay},'today')" style="padding:6px 12px;border-radius:7px;border:1px solid var(--border2);background:var(--card2);font-family:inherit;font-size:12px;font-weight:500;color:var(--muted);cursor:pointer">Adjust ↕</button>
     </div>
-    ${session.d ? `<div style="font-size:14px;font-weight:500;margin-bottom:8px">${session.d}</div>` : ''}
-    <textarea placeholder="How did it go? Pace, effort, notes..." style="margin-top:4px" oninput="saveSessionNote('${dk}',this.value)">${DB.notes['sn_'+dk]||''}</textarea>
+    <div style="font-size:14px;line-height:1.7;color:var(--text);margin-bottom:${session.t!=='rest'?'14px':'0'}">${focusText}</div>
+    ${session.d ? `<div style="font-size:13px;font-weight:500;color:var(--muted);background:var(--card2);border-radius:7px;padding:8px 12px">${session.d}</div>` : ''}
   </div>
-
+ 
+  <!-- Before / After -->
+  ${session.t !== 'rest' ? `
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+    <div class="card-sm" style="background:var(--blue-bg);border-color:var(--blue)33">
+      <div style="font-size:10px;font-weight:700;color:var(--blue);letter-spacing:.05em;text-transform:uppercase;margin-bottom:6px">Before</div>
+      <div style="font-size:12px;line-height:1.6;color:#3A7AB8">${beforeText}</div>
+    </div>
+    <div class="card-sm" style="background:var(--green-bg);border-color:var(--green)33">
+      <div style="font-size:10px;font-weight:700;color:var(--green);letter-spacing:.05em;text-transform:uppercase;margin-bottom:6px">After</div>
+      <div style="font-size:12px;line-height:1.6;color:#2AAA74">${afterText}</div>
+    </div>
+  </div>` : ''}
+ 
+  ${(session.t === 'intv' || session.t === 'tempo') ? renderSessionDetail(wi, planDay) : ''}
+ 
+  <!-- Mark done -->
+  ${session.t !== 'rest' ? `
+  <div style="margin-bottom:12px">
+    <button onclick="toggleSession('${sKey}')" style="width:100%;padding:12px 18px;border-radius:10px;border:1px solid var(--green);font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;background:${sessionDone?'var(--green-dim)':'var(--green)'};color:${sessionDone?'var(--green)':'#060E09'};transition:all .15s">
+      ${sessionDone ? '✓ Session done' : 'Mark session done'}
+    </button>
+  </div>` : ''}
+ 
+  <!-- Session note -->
+  <textarea placeholder="How did it go? Pace, effort, notes..." style="margin-bottom:16px" oninput="saveSessionNote('${dk}',this.value)">${DB.notes['sn_'+dk]||''}</textarea>
+ 
+  <!-- Today's mindset -->
+  <div class="card-sm" style="background:var(--purple-bg);border-color:var(--purple)33;margin-bottom:16px">
+    <div style="font-size:10px;font-weight:700;color:var(--purple);letter-spacing:.05em;text-transform:uppercase;margin-bottom:6px">Today's mindset</div>
+    <div style="font-size:13px;line-height:1.6;color:#7A62C8;font-style:italic">${mindsetText}</div>
+  </div>
+ 
+  <!-- Minimum standard -->
+  <div class="sec-h">Minimum standard if energy is low</div>
+  <div class="card-sm" style="margin-bottom:16px">
+    <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:10px">If today feels hard before you start — tired, stressed, under-recovered — do not aim for perfect. Aim for this:</div>
+    <ul class="check-list">
+      <li>Eat at least 3 times today</li>
+      <li>Complete the session, or reduce it slightly — do not bin the whole day</li>
+      <li>Drink water</li>
+      <li>Go to bed without trying to make up for anything</li>
+    </ul>
+    <div style="margin-top:10px;font-size:12px;color:var(--faint);font-style:italic">Coffee does not replace food. One off day does not need correcting. It needs rest.</div>
+  </div>
+ 
   <!-- Injury checklists -->
   <div class="sec-h">Injury prevention — today</div>
   ${injGroups.map(gid => {
@@ -688,7 +1264,7 @@ function renderToday() {
       }).join('')}
     </div>`;
   }).join('')}
-
+ 
   <!-- Diet today -->
   <div class="sec-h">Today's meals — ${diet.day}</div>
   <div class="card-sm" style="margin-bottom:8px;background:var(--amber-bg);border-color:var(--amber)33">
@@ -722,10 +1298,143 @@ function renderToday() {
   <div style="background:var(--green-bg);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--green);line-height:1.6;margin-bottom:12px">${diet.note}</div>
   <textarea placeholder="Diet notes for today — carb choice, energy levels, how you felt..." oninput="saveDietNote('${dk}',this.value)">${DB.dietNotes[dk]||''}</textarea>
   `;
-
+ 
   document.getElementById('sec-today').innerHTML = html;
 }
-
+ 
+// ═══════════════════════════════════════════════════════════════
+// SHOPPING LIST
+// ═══════════════════════════════════════════════════════════════
+// The weekly plan has a fixed repeating structure:
+// Mon=easy run, Tue=gym, Wed=hinge AM, Thu=gym, Fri=tempo/quality, Sat=long/intv, Sun=rest
+// Diet days map to DIET[0..6]. The shopping list is the same every week
+// (the training type shifts pace targets but not ingredients), with small
+// phase-based tweaks for long-run weeks vs recovery weeks.
+ 
+const SHOP_CATEGORIES = [
+  {
+    id: 'protein',
+    label: 'Protein',
+    color: 'var(--coral)',
+    bg: 'var(--coral-bg)',
+    items: [
+      { id: 'sp1',  text: 'Chicken breast',                   qty: '~600g' },
+      { id: 'sp2',  text: 'Turkey burgers',                   qty: '4–6 burgers' },
+      { id: 'sp3',  text: 'Turkey meatballs or wafer thin turkey', qty: '300g' },
+      { id: 'sp4',  text: 'Salmon fillets',                   qty: '2 fillets' },
+      { id: 'sp5',  text: 'Prawns (fresh or frozen)',          qty: '200g' },
+      { id: 'sp6',  text: 'Eggs',                             qty: '6–8' },
+    ],
+  },
+  {
+    id: 'dairy',
+    label: 'Dairy & fermented',
+    color: 'var(--blue)',
+    bg: 'var(--blue-bg)',
+    items: [
+      { id: 'sd1',  text: 'Fage 0% Greek yoghurt',            qty: '2 × 500g tubs' },
+      { id: 'sd2',  text: 'Cottage cheese',                   qty: '2 × 300g tubs' },
+      { id: 'sd3',  text: 'Babybel light',                    qty: '1 pack (6)' },
+      { id: 'sd4',  text: 'Yakult',                           qty: '1 multipack (5–7)' },
+      { id: 'sd5',  text: 'Kefir (plain, low-fat)',           qty: '500ml' },
+      { id: 'sd6',  text: 'Lidl protein pudding pots',        qty: '2–3' },
+    ],
+  },
+  {
+    id: 'carbs',
+    label: 'Carbs & grains',
+    color: 'var(--amber)',
+    bg: 'var(--amber-bg)',
+    items: [
+      { id: 'sc1',  text: 'Oats (rolled)',                    qty: '500g bag' },
+      { id: 'sc2',  text: 'Rice cakes (salt & vinegar or plain)', qty: '2 × packs' },
+      { id: 'sc3',  text: 'White rice (dry)',                 qty: '500g' },
+      { id: 'sc4',  text: 'White potatoes',                   qty: '1kg bag' },
+      { id: 'sc5',  text: 'Bagel thins',                      qty: '1 pack' },
+    ],
+  },
+  {
+    id: 'fruit',
+    label: 'Fruit',
+    color: 'var(--green)',
+    bg: 'var(--green-bg)',
+    items: [
+      { id: 'sf1',  text: 'Blueberries',                      qty: '2 × 150g punnets' },
+      { id: 'sf2',  text: 'Pink lady apples',                 qty: '4–5' },
+      { id: 'sf3',  text: 'Bananas',                          qty: '3–4' },
+      { id: 'sf4',  text: 'Kiwis',                            qty: '4' },
+      { id: 'sf5',  text: 'Oranges',                          qty: '2' },
+    ],
+  },
+  {
+    id: 'veg',
+    label: 'Vegetables',
+    color: 'var(--teal)',
+    bg: 'var(--teal-bg)',
+    items: [
+      { id: 'sv1',  text: 'Courgettes',                       qty: '3–4' },
+      { id: 'sv2',  text: 'Green beans (fresh or frozen)',    qty: '400g' },
+      { id: 'sv3',  text: 'Broccoli',                         qty: '1 head' },
+      { id: 'sv4',  text: 'Spinach (bag)',                    qty: '1 bag' },
+      { id: 'sv5',  text: 'Lidl salad bowl (ready)',          qty: '2–3' },
+    ],
+  },
+  {
+    id: 'store',
+    label: 'Store cupboard',
+    color: 'var(--purple)',
+    bg: 'var(--purple-bg)',
+    items: [
+      { id: 'ss1',  text: 'Passata',                          qty: '1 jar' },
+      { id: 'ss2',  text: 'Olive oil or cooking spray',       qty: 'as needed' },
+      { id: 'ss3',  text: 'Salt, pepper, garlic',             qty: 'as needed' },
+    ],
+  },
+];
+ 
+function renderShoppingList(wi, context) {
+  // context = 'week' or 'diet'
+  const storageKey = `shop_w${wi}`;
+  const checked = DB.shop || {};
+ 
+  let html = `
+  <div class="sec-h">Shopping list — Week ${wi + 1}</div>
+  <div class="card" style="margin-bottom:12px">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:14px">
+      <div style="font-size:13px;color:var(--muted);line-height:1.6">Everything you need for this week's food plan. Tick off as you shop. MyProtein whey not included — assumed in stock.</div>
+      <button class="btn btn-sm" onclick="clearShopList(${wi})" style="flex-shrink:0;color:var(--faint);border-color:var(--border)">Clear all ticks</button>
+    </div>`;
+ 
+  SHOP_CATEGORIES.forEach(cat => {
+    const catDone = cat.items.filter(i => checked[`${storageKey}_${i.id}`]).length;
+    const catTotal = cat.items.length;
+    html += `
+    <div style="margin-bottom:14px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:${cat.color}">${cat.label}</div>
+        <div style="font-size:11px;color:${catDone === catTotal ? 'var(--green)' : 'var(--faint)'}">${catDone}/${catTotal}</div>
+      </div>
+      <div style="background:${cat.bg};border-radius:8px;padding:2px 12px">`;
+ 
+    cat.items.forEach(item => {
+      const isChecked = checked[`${storageKey}_${item.id}`] || false;
+      html += `
+        <div class="cb-row${isChecked ? ' done' : ''}" id="shop_${wi}_${item.id}">
+          <input type="checkbox" id="shopcb_${wi}_${item.id}" ${isChecked ? 'checked' : ''} onchange="toggleShopItem(${wi},'${item.id}',this.checked)">
+          <label for="shopcb_${wi}_${item.id}" style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex:1">
+            <span>${item.text}</span>
+            <span style="font-size:11px;color:var(--faint);white-space:nowrap;flex-shrink:0">${item.qty}</span>
+          </label>
+        </div>`;
+    });
+ 
+    html += `</div></div>`;
+  });
+ 
+  html += `</div>`;
+  return html;
+}
+ 
 // ═══════════════════════════════════════════════════════════════
 // RENDER — THIS WEEK
 // ═══════════════════════════════════════════════════════════════
@@ -734,12 +1443,17 @@ function renderWeek() {
   const week = WEEKS[wi];
   const phase = getPhase(wi+1);
   const dk = dateKey();
-
+ 
   // Calculate week start date
   const weekStart = new Date(PLAN_START);
   weekStart.setDate(weekStart.getDate() + wi * 7);
-
+ 
   let html = `
+  <!-- Intro banner -->
+  <div class="intro-banner">
+    Train with consistency. Eat to support the work. Adjust when needed. <strong>Do not let one imperfect moment become an off-plan week.</strong>
+  </div>
+ 
   <div class="header-band" style="border-color:${phase.color}44">
     <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
       <div>
@@ -752,36 +1466,81 @@ function renderWeek() {
       </div>
     </div>
   </div>
-
+ 
+  <!-- Weekly goal -->
+  <div class="sec-h">Weekly goal</div>
+  <div class="card-sm" style="margin-bottom:12px">
+    <div style="font-size:13px;line-height:1.7;color:var(--text)">
+      Stack consistent days together. Hit the quality run with intention. Complete the long run without racing it. Keep gym work supportive, not exhausting.
+    </div>
+  </div>
+ 
+  <!-- Week grid -->
   <div class="week-grid">
     ${['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map((d,i) => {
-      const s = week.days[i];
-      const sKey = `w${wi}_d${i}`;
-      // We use a day-specific key for current week's completions
-      // Find actual calendar date for this day
+      const s = effectiveSession(wi, i);
       const dayDate = new Date(weekStart);
       dayDate.setDate(dayDate.getDate() + i);
       const dayDk = `${dayDate.getFullYear()}-${String(dayDate.getMonth()+1).padStart(2,'0')}-${String(dayDate.getDate()).padStart(2,'0')}`;
       const done = DB.sessions[dayDk+'_s'] || false;
       const isToday = i === planDay;
-      const styleMap = {
-        easy:'var(--green)',long:'var(--purple)',tempo:'var(--blue)',
-        intv:'var(--amber)',race:'var(--coral)',gym:'var(--teal)',rest:'var(--faint)'
-      };
-      const col = styleMap[s.t]||'var(--faint)';
-      return `<div class="day-cell${isToday?' today':''}${done?' done-cell':''}" onclick="openDayDetail(${i})">
+      const isOverridden = s._overridden;
+      const isSkipped = s._ovType === 'skipped';
+      const isDeferred = s._ovType === 'deferred';
+      return `<div class="day-cell${isToday?' today':''}${done?' done-cell':''}${isOverridden&&!done?' overridden':''}${isSkipped?' skipped-cell':''}" onclick="openOverrideModal(${wi},${i},'week')">
         <div class="day-name-sm">${d}</div>
         <div style="margin-bottom:5px">${sessionPill(s.t,s.gym)}</div>
         <div style="font-size:10px;color:var(--muted);line-height:1.3">${s.d||''}</div>
         ${done?`<div style="font-size:10px;color:var(--green);margin-top:4px;font-weight:600">✓</div>`:''}
+        ${isOverridden&&!done?(isSkipped?`<div class="skipped-tag">skipped</div>`:isDeferred?`<div class="deferred-tag">deferred</div>`:`<div class="override-tag">adjusted</div>`):''}
       </div>`;
     }).join('')}
   </div>
-
+ 
+  <!-- 5 priorities -->
+  <div class="sec-h">5 priorities this week</div>
+  <div class="card-sm" style="margin-bottom:12px">
+    <ul class="check-list">
+      <li>Hit the quality run with focus — this is where sub-50 fitness is built</li>
+      <li>Complete the long run easy — do not race it</li>
+      <li>Eat consistently, especially on run days — no skipping meals after sessions</li>
+      <li>Keep gym work controlled — finish energised, not drained</li>
+      <li>Protect recovery — easy runs stay easy, rest days stay restful</li>
+    </ul>
+  </div>
+ 
+  <!-- Rules for this week -->
+  <div class="sec-h">Rules for this week</div>
+  <div class="card-sm" style="margin-bottom:12px">
+    <div style="font-size:12px;font-weight:600;color:var(--green);margin-bottom:8px">Do</div>
+    <ul class="check-list" style="margin-bottom:12px">
+      <li>Keep easy runs conversational — slow down if in doubt</li>
+      <li>Fuel run days properly, especially carbs before and after</li>
+      <li>Adjust when needed — reduce intensity rather than cancel entirely</li>
+      <li>Go to bed without trying to make up for anything</li>
+    </ul>
+    <div style="font-size:12px;font-weight:600;color:var(--coral);margin-bottom:8px">Do not</div>
+    <ul class="check-list">
+      <li>Turn easy runs into moderate runs</li>
+      <li>Skip carbs on run days</li>
+      <li>Punish yourself if you miss a session</li>
+      <li>Ignore pain that changes your stride</li>
+    </ul>
+  </div>
+ 
+  <!-- What success looks like -->
+  <div class="card-sm" style="background:var(--green-bg);border-color:var(--green)33;margin-bottom:16px">
+    <div style="font-size:10px;font-weight:700;color:var(--green);letter-spacing:.05em;text-transform:uppercase;margin-bottom:6px">What success looks like this week</div>
+    <div style="font-size:13px;line-height:1.7;color:#2AAA74">Most sessions completed. Easy days felt easy. Quality session done with intention. No spiral after one imperfect moment. Body and energy managed well enough.</div>
+  </div>
+ 
+  ${renderShoppingList(wi, 'week')}
+ 
   <div class="sec-h">Weekly notes</div>
   <textarea placeholder="How is this week going? Ankle, knee, energy, any adjustments..." oninput="saveNote('wk${wi}',this.value)">${DB.notes['wk'+wi]||''}</textarea>
-
+ 
   <div class="sec-h" style="margin-top:16px">Weight this week</div>
+  <div style="font-size:12px;color:var(--muted);margin-bottom:10px;line-height:1.6">Optional — log if useful, but weight is one data point among many. Energy, sleep, and training quality matter more day to day.</div>
   <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap">
     <input id="wt-val" type="number" step="0.1" placeholder="lbs" style="width:90px;background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-family:inherit;font-size:14px;">
     <button class="btn btn-green btn-sm" onclick="logWeight()" style="padding:8px 16px">Log weight</button>
@@ -791,24 +1550,124 @@ function renderWeek() {
     <div class="weight-entry">
       <span style="color:var(--muted);font-size:12px">${e.date}</span>
       <span style="font-weight:600">${e.val} lb</span>
-      <span style="font-size:12px;color:${e.val<=130?'var(--green)':e.val<=140?'var(--amber)':'var(--coral)'}">
-        ${e.val <= 130 ? '⚑ Goal!' : e.val <= 135 ? '▼ Close' : ''}
-      </span>
       <button class="weight-del" onclick="deleteWeight('${e.id}')">×</button>
     </div>`).join('') || '<div style="color:var(--faint);font-size:13px;padding:8px 0">No weight entries yet</div>'}
   </div>
   `;
-
+ 
   document.getElementById('sec-week').innerHTML = html;
 }
-
+ 
 // ═══════════════════════════════════════════════════════════════
 // RENDER — FULL PLAN
 // ═══════════════════════════════════════════════════════════════
 function renderPlan() {
   const { wi } = today();
-  let html = `<div style="font-size:22px;font-weight:700;letter-spacing:-0.01em;margin-bottom:14px">All 24 weeks</div>`;
-
+ 
+  let html = `
+  <!-- Intro banner -->
+  <div class="intro-banner">
+    Train with consistency. Eat to support the work. Adjust when needed. <strong>Do not let one imperfect moment become an off-plan week.</strong>
+  </div>
+ 
+  <!-- Main goal -->
+  <div style="font-size:22px;font-weight:700;letter-spacing:-0.01em;margin-bottom:4px">Full plan</div>
+  <div style="font-size:13px;color:var(--muted);margin-bottom:16px">24 weeks · 23 March – 6 September 2026</div>
+ 
+  <div class="sec-h">Main goal</div>
+  <div class="card-sm" style="background:var(--coral-bg);border-color:var(--coral)33;margin-bottom:8px">
+    <div style="font-size:16px;font-weight:700;color:var(--coral);margin-bottom:4px">Sub-50:00 10K</div>
+    <div style="font-size:12px;color:#C05030;line-height:1.6">Race pace: 8:03 /mile · Current fitness: ~8:51 /mile (54:58 on 15 Mar) · Gap to close: ~49 seconds per mile</div>
+  </div>
+ 
+  <div class="sec-h">Secondary goals</div>
+  <div class="card-sm" style="margin-bottom:16px">
+    <ul class="check-list">
+      <li>Build confidence running at and above 10K pace</li>
+      <li>Improve the ability to hold discomfort without panicking</li>
+      <li>Make gym work support running — not compete with it</li>
+      <li>Become more consistent week to week, not just more motivated</li>
+    </ul>
+  </div>
+ 
+  <!-- Weekly structure -->
+  <div class="sec-h">Weekly training structure</div>
+  <div class="card-sm" style="margin-bottom:8px">
+    ${[
+      ['Monday',   'pill-easy',   'Easy run',       'Conversational pace — genuinely easy. Ankle check day.'],
+      ['Tuesday',  'pill-gym',    'Strength (eve)',  'Squat or bench pattern. Gym at 7:30pm.'],
+      ['Wednesday','pill-gym',    'Strength (AM)',   'Hinge pattern. Gym first thing — hardest lift day.'],
+      ['Thursday', 'pill-gym',    'Strength (eve)',  'Bench or squat pattern. Gym at 7:30pm.'],
+      ['Friday',   'pill-tempo',  'Quality run',     'Tempo or intervals — the most important session of the week.'],
+      ['Saturday', 'pill-long',   'Long run',        'Easy effort, building duration. Do not race this.'],
+      ['Sunday',   'pill-rest',   'Rest',            'Full rest or very light mobility. Let the week land.'],
+    ].map(([day,pill,type,note])=>`
+    <div style="display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)">
+      <span style="font-size:12px;color:var(--muted);min-width:76px;padding-top:2px">${day}</span>
+      <div>
+        <span class="pill ${pill}" style="margin-bottom:4px;display:inline-block">${type}</span>
+        <div style="font-size:12px;color:var(--muted);line-height:1.5">${note}</div>
+      </div>
+    </div>`).join('')}
+    <div style="padding-top:8px;font-size:12px;color:var(--faint);font-style:italic">Optional: mobility or recovery work any day it feels useful.</div>
+  </div>
+ 
+  <!-- Run types -->
+  <div class="sec-h">Run types explained</div>
+  <div class="card-sm" style="margin-bottom:8px">
+    ${[
+      ['pill-easy','Easy run','Fully conversational. You could hold a long sentence without effort. If you\'re breathing too hard to chat, slow down. This is not a warm-up for a harder effort — it is the effort.'],
+      ['pill-tempo','Quality run','Tempo: a sustained effort at threshold pace — hard enough to be uncomfortable, controlled enough to hold for 2–4 miles. Intervals: shorter reps at faster pace with structured rest. These sessions build the fitness that shows up on race day.'],
+      ['pill-long','Long run','Easy effort over a longer distance. The goal is time on feet, not pace. Run it like you could run further if you needed to. These build your aerobic engine and mental confidence.'],
+    ].map(([pill,name,desc])=>`
+    <div style="margin-bottom:14px">
+      <span class="pill ${pill}" style="margin-bottom:6px;display:inline-block">${name}</span>
+      <div style="font-size:13px;line-height:1.6;color:var(--muted)">${desc}</div>
+    </div>`).join('')}
+  </div>
+ 
+  <!-- Effort guide -->
+  <div class="sec-h">Effort guide</div>
+  <div class="card-sm" style="margin-bottom:8px">
+    ${[
+      ['Easy','Could hold a full conversation — multiple sentences'],
+      ['Steady','Short sentences only'],
+      ['Tempo / threshold','Short phrases — not full sentences'],
+      ['Hard intervals','Focused effort — controlled, not spiralling'],
+    ].map(([level,desc])=>`
+    <div class="info-row">
+      <span class="info-row-label">${level}</span>
+      <span class="info-row-val" style="color:var(--muted)">${desc}</span>
+    </div>`).join('')}
+  </div>
+ 
+  <!-- Strength -->
+  <div class="sec-h">Strength focus</div>
+  <div class="card-sm" style="margin-bottom:8px">
+    <div style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:10px">Three sessions per week, built around movements that directly support running. The goal is to finish gym days feeling capable — not destroyed.</div>
+    <ul class="check-list">
+      <li>Single-leg strength — lunges, step-ups, split squats</li>
+      <li>Glutes and hamstrings — RDLs, hip thrusts, good mornings</li>
+      <li>Calves — eccentric calf raises, especially on the left ankle</li>
+      <li>Core stability — not crunches; anti-rotation and bracing work</li>
+      <li>Balanced upper body — bench and rows, nothing that dominates recovery</li>
+    </ul>
+  </div>
+ 
+  <!-- Fallback rule -->
+  <div class="card-sm" style="background:var(--amber-bg);border-color:var(--amber)33;margin-bottom:8px">
+    <div style="font-size:12px;font-weight:600;color:var(--amber);margin-bottom:6px">Fallback rule</div>
+    <div style="font-size:13px;line-height:1.6;color:#C8963A">If you are tired, stressed, bloated, under-recovered, or mentally flat — keep the session but reduce the intensity. Do not bin the whole day. A reduced session is infinitely better than no session.</div>
+  </div>
+ 
+  <!-- Golden rule -->
+  <div class="card-sm" style="background:var(--green-bg);border-color:var(--green)33;margin-bottom:16px">
+    <div style="font-size:14px;font-weight:700;color:var(--green);text-align:center;padding:4px 0">Consistency beats intensity.</div>
+  </div>
+ 
+  <!-- All 24 weeks -->
+  <div style="font-size:13px;font-weight:600;margin-bottom:10px">All 24 weeks</div>`;
+ 
   PHASES.forEach(ph => {
     const phWeeks = WEEKS.filter(w => getPhase(w.wk).id === ph.id);
     html += `<div style="margin-bottom:6px;padding:10px 14px;background:${ph.dim};border:1px solid ${ph.color}33;border-radius:10px;font-size:13px;font-weight:600;color:${ph.color}">
@@ -826,13 +1685,13 @@ function renderPlan() {
         return DB.sessions[dk+'_s'];
       }).length;
       const nonRest = week.days.filter(d=>d.t!=='rest').length;
-
+ 
       html += `<div class="plan-week-row" style="${isCurrent?'border-color:var(--green)':''}">
         <div class="plan-week-header" onclick="togglePlanWeek(${wIdx})">
           <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
             ${isCurrent?`<span style="font-size:10px;font-weight:600;color:var(--green);background:var(--green-bg);padding:2px 7px;border-radius:5px">CURRENT</span>`:''}
             ${week.rec?`<span style="font-size:10px;font-weight:600;color:var(--amber);background:var(--amber-bg);padding:2px 7px;border-radius:5px">RECOVERY</span>`:''}
-            <span style="font-size:13px;font-weight:600">${week.wk <= 6 ? 'Week' : 'Week'} ${week.wk}</span>
+            <span style="font-size:13px;font-weight:600">Week ${week.wk}</span>
             <span style="font-size:12px;color:var(--muted)">${week.dates}</span>
           </div>
           <div style="display:flex;align-items:center;gap:12px">
@@ -868,14 +1727,14 @@ function renderPlan() {
       </div>`;
     });
   });
-
+ 
   document.getElementById('sec-plan').innerHTML = html;
-
+ 
   // Auto-open current week
   const body = document.getElementById('pwb_'+wi);
   if (body) { body.classList.add('open'); document.getElementById('arr_'+wi).textContent='⌄'; }
 }
-
+ 
 function togglePlanWeek(i) {
   const body = document.getElementById('pwb_'+i);
   const arr  = document.getElementById('arr_'+i);
@@ -883,17 +1742,92 @@ function togglePlanWeek(i) {
   const open = body.classList.toggle('open');
   arr.textContent = open ? '⌄' : '›';
 }
-
+ 
 // ═══════════════════════════════════════════════════════════════
 // RENDER — DIET
 // ═══════════════════════════════════════════════════════════════
 function renderDiet() {
-  const { jsDay } = today();
+  const { jsDay, wi } = today();
   const todayDietIdx = jsDay === 0 ? 6 : jsDay - 1;
-
-  let html = `<div style="font-size:22px;font-weight:700;letter-spacing:-0.01em;margin-bottom:4px">Diet plan</div>
-  <div style="font-size:13px;color:var(--muted);margin-bottom:16px">36F · 147 lb → 130 lb target ~mid July · 1,350–1,600 kcal by training type · Protein 120g+ daily</div>
-
+ 
+  let html = `
+  <!-- Intro banner -->
+  <div class="intro-banner">
+    Train with consistency. Eat to support the work. Adjust when needed. <strong>Do not let one imperfect moment become an off-plan week.</strong>
+  </div>
+ 
+  <div style="font-size:22px;font-weight:700;letter-spacing:-0.01em;margin-bottom:4px">Diet</div>
+  <div style="font-size:13px;color:var(--muted);margin-bottom:16px">Fuel training · Support recovery · Reduce overthinking · Keep it simple enough to follow in real life</div>
+ 
+  ${renderShoppingList(wi, 'diet')}
+ 
+  <!-- Main nutrition goal -->
+  <div class="sec-h">Nutrition priorities</div>
+  <div class="card-sm" style="margin-bottom:8px">
+    <ul class="check-list">
+      <li>Protein at each main meal — every day, not just run days</li>
+      <li>Carbs around runs — before or after depending on timing</li>
+      <li>Simple foods you will actually eat</li>
+      <li>Gut-friendly choices on run days</li>
+      <li>No under-fuelling disguised as being good</li>
+    </ul>
+  </div>
+ 
+  <!-- Eating rhythm -->
+  <div class="sec-h">Your eating rhythm</div>
+  <div class="card-sm" style="margin-bottom:8px">
+    <div style="font-size:13px;line-height:1.7;color:var(--text);margin-bottom:10px">First meal around 11–12. Snack around 3–4. Dinner around 6–7. This is fine. You do not need an early breakfast. The goal is consistency within your actual life, not a forced eating window that does not suit you.</div>
+    ${[
+      ['Meal 1 ~11–12','Protein + carbs. Oats with Fage or eggs. Yakult alongside on most days.'],
+      ['Snack ~3–4','Something real — Babybel, cottage cheese, fruit, rice cakes. Not coffee.'],
+      ['Dinner ~6–7','Protein + veg + carbs on run days. Protein + veg on rest and gym-only days.'],
+      ['Pre-run','Light carbs 30–90 mins before. Rice cakes or a small oat portion. Nothing heavy.'],
+      ['Post-run','Get protein and carbs in within 45 mins. Oats with whey stirred in, or shake then food.'],
+    ].map(([label,desc])=>`
+    <div class="info-row">
+      <span class="info-row-label" style="font-weight:600;font-size:11px">${label}</span>
+      <span class="info-row-val" style="color:var(--muted);font-size:12px">${desc}</span>
+    </div>`).join('')}
+  </div>
+ 
+  <!-- Run day rules -->
+  <div class="sec-h">Run day rules</div>
+  <div class="card-sm" style="margin-bottom:8px">
+    <ul class="check-list">
+      <li>Eat carbs before or after the run depending on timing — both options work</li>
+      <li>Do not skip meals because the run went well or you feel virtuous</li>
+      <li>Recovery matters more than perfection — eating after a run is not a reward, it is the recovery</li>
+    </ul>
+  </div>
+ 
+  <!-- Rest day rules -->
+  <div class="sec-h">Rest day rules</div>
+  <div class="card-sm" style="margin-bottom:8px">
+    <ul class="check-list">
+      <li>Keep protein consistent — muscle repair continues on rest days</li>
+      <li>Eat normally — rest is when your body absorbs the work you did</li>
+      <li>Do not slash food to compensate for not training</li>
+    </ul>
+  </div>
+ 
+  <!-- Bad day food rule -->
+  <div class="card-sm" style="background:var(--amber-bg);border-color:var(--amber)33;margin-bottom:8px">
+    <div style="font-size:12px;font-weight:600;color:var(--amber);margin-bottom:6px">Bad day food rule</div>
+    <div style="font-size:13px;line-height:1.6;color:#C8963A">If everything feels hard today — pick the easiest version of the plan, not nothing. One Babybel and some rice cakes is better than skipping a meal. A protein pudding pot is better than going to bed empty. Make the smallest possible good choice.</div>
+  </div>
+ 
+  <!-- Gut note -->
+  <div class="card-sm" style="background:var(--teal-bg);border-color:var(--teal)33;margin-bottom:8px">
+    <div style="font-size:12px;font-weight:600;color:var(--teal);margin-bottom:6px">Gut note</div>
+    <div style="font-size:13px;line-height:1.6;color:#3AA898">Keep pre-run meals simple and familiar. Avoid known trigger foods close to runs. Yakult daily supports gut health over time. Kefir and Fage add to this. If your stomach is unsettled before a run, stick to plain rice cakes or dry oats — nothing experimental.</div>
+  </div>
+ 
+  <!-- Under-fuelling warning -->
+  <div class="card-sm" style="background:var(--red-bg);border-color:var(--red)33;margin-bottom:16px">
+    <div style="font-size:13px;line-height:1.7;color:#E88888;font-weight:500">Under-fuelling will not make this easier. It will make your legs heavy, your mood worse, your recovery slower, and your risk of injury higher. Eating enough is not optional — it is part of the plan.</div>
+  </div>
+ 
+  <!-- Flex notes -->
   <div class="card-sm" style="background:var(--amber-bg);border-color:var(--amber)44;margin-bottom:8px">
     <div style="font-size:12px;font-weight:600;color:var(--amber);margin-bottom:4px">How calories flex with training</div>
     <div style="font-size:12px;color:#C8963A;line-height:1.7">Easy run & gym evenings: 1,400–1,450 kcal · Tempo Friday: 1,500 kcal · Long run / intervals Saturday: 1,600 kcal · Rest Sunday: 1,350 kcal</div>
@@ -906,10 +1840,9 @@ function renderDiet() {
     <div style="font-size:12px;font-weight:600;color:var(--pink);margin-bottom:4px">MyProtein Salted Caramel Whey Isolate</div>
     <div style="font-size:12px;color:#B8386A;line-height:1.7">Use within 20–30 mins post-run or post-gym. Stir into Friday/Saturday oats or shake with water. On Tue/Thu gym nights use alongside or instead of the pudding pot. Never as a meal replacement.</div>
   </div>`;
-
+ 
   DIET.forEach((diet, idx) => {
     const isToday = idx === todayDietIdx;
-    // Use a persistent key per weekday for diet snack tracking
     const dk = `diet_dow_${idx}`;
     html += `<div class="card" style="${isToday?'border-color:var(--amber)':''}">
       <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:12px">
@@ -921,7 +1854,7 @@ function renderDiet() {
         <span style="font-size:13px;font-weight:600;color:var(--amber)">${diet.kcal} kcal</span>
       </div>
       <div style="font-size:12px;color:var(--muted);margin-bottom:12px;font-style:italic">${diet.timing}</div>
-
+ 
       <div class="meal-grid">
         <div class="meal-card">
           <div class="meal-label">Brunch ~11:30</div>
@@ -935,7 +1868,7 @@ function renderDiet() {
           <div class="meal-macros"><span class="macro-chip">${diet.dinner.kcal}</span><span class="macro-chip">${diet.dinner.p}</span><span class="macro-chip">${diet.dinner.c}</span></div>
         </div>
       </div>
-
+ 
       <div class="meal-label" style="margin-bottom:8px">Snacks</div>
       ${diet.snacks.map(s=>{
         const checked = DB.diet[`${dk}_${s.id}`]||false;
@@ -944,24 +1877,24 @@ function renderDiet() {
           <label for="cb_${dk}_${s.id}"><span style="color:var(--muted);font-size:11px;margin-right:6px">${s.time}</span>${s.text}${s.whey?'<span class="whey-tag">WHEY</span>':''}</label>
         </div>`;
       }).join('')}
-
+ 
       <div style="background:var(--green-bg);border-radius:7px;padding:9px 12px;font-size:12px;color:var(--green);line-height:1.6;margin:10px 0 8px">${diet.note}</div>
       <textarea style="min-height:48px" placeholder="${diet.day} notes — energy, carb choice, how you felt..." oninput="saveDietWeekdayNote(${idx},this.value)">${DB.dietNotes['dow_'+idx]||''}</textarea>
     </div>`;
   });
-
+ 
   html += `<div class="sec-h">Weekly overall diet notes</div>
   <textarea placeholder="Weight · Energy levels · What worked · What to tweak · Digestion notes..." oninput="saveNote('diet_weekly',this.value)">${DB.notes['diet_weekly']||''}</textarea>`;
-
+ 
   document.getElementById('sec-diet').innerHTML = html;
 }
-
+ 
 // ═══════════════════════════════════════════════════════════════
 // RENDER — INJURY
 // ═══════════════════════════════════════════════════════════════
 function renderInjury() {
   const dk = dateKey();
-
+ 
   // Calculate streaks for daily routine
   let dailyStreak = 0;
   for (let i = 0; i < 30; i++) {
@@ -971,18 +1904,75 @@ function renderInjury() {
     if (allDone) dailyStreak++;
     else if (i > 0) break;
   }
-
-  let html = `<div style="font-size:22px;font-weight:700;letter-spacing:-0.01em;margin-bottom:4px">Injury prevention</div>
+ 
+  let html = `<div style="font-size:22px;font-weight:700;letter-spacing:-0.01em;margin-bottom:4px">Injury</div>
   <div style="font-size:13px;color:var(--muted);margin-bottom:16px">Left ankle (lateral sprain ~8 wks) · Right knee (medial pain)</div>
-
+ 
+  <!-- Main rule -->
+  <div class="card-sm" style="background:var(--card2);border-color:var(--border2);margin-bottom:12px">
+    <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:6px">The main rule</div>
+    <div style="font-size:13px;line-height:1.7;color:var(--muted)">It is better to slightly adjust one run than lose two weeks. You are good at pushing through and telling yourself it is probably fine — that instinct is not always helpful. Use the guide below before deciding.</div>
+  </div>
+ 
   <div class="alert" style="margin-bottom:14px">A single physio session is strongly recommended — ankle is only ~8 weeks post-sprain. A physio can confirm ligament grade and screen hip mechanics for the knee. This plan is for maintenance, not a substitute for assessment.</div>
-
+ 
+  <!-- Traffic light system -->
+  <div class="sec-h">Green / Amber / Red guide</div>
+ 
+  <div class="light-block light-green">
+    <div class="light-label light-label-green">🟢 Green light — train as planned</div>
+    <ul class="check-list">
+      <li>Mild soreness that does not change how you move</li>
+      <li>Stiffness that improves as you warm up</li>
+      <li>Tired legs after training</li>
+    </ul>
+  </div>
+ 
+  <div class="light-block light-amber">
+    <div class="light-label light-label-amber">🟡 Amber light — adjust and monitor</div>
+    <ul class="check-list">
+      <li>A lingering niggle that has not fully resolved</li>
+      <li>Repeated tightness in the same area across multiple sessions</li>
+      <li>Discomfort that makes you anxious but does not change your form</li>
+    </ul>
+    <div style="font-size:12px;color:#C8963A;margin-top:8px;font-weight:600">Response:</div>
+    <ul class="check-list" style="margin-top:4px">
+      <li>Reduce intensity — keep the session, drop the effort level</li>
+      <li>Shorten the session if needed</li>
+      <li>Monitor how it feels during and for 24 hours after</li>
+    </ul>
+  </div>
+ 
+  <div class="light-block light-red">
+    <div class="light-label light-label-red">🔴 Red light — stop and rest</div>
+    <ul class="check-list">
+      <li>Pain that changes your stride or running form</li>
+      <li>Sharp pain at any point during the session</li>
+      <li>Pain that worsens as you continue running</li>
+      <li>You are compensating to protect one side</li>
+    </ul>
+    <div style="font-size:12px;color:#E88888;margin-top:8px;font-style:italic">Stop the session. Rest. Reassess before the next one.</div>
+  </div>
+ 
+  <!-- Recovery basics -->
+  <div class="sec-h">Recovery basics</div>
+  <div class="card-sm" style="margin-bottom:14px">
+    <ul class="check-list">
+      <li>Sleep is the best recovery tool available — protect it</li>
+      <li>Eat enough — under-fuelling slows tissue repair</li>
+      <li>Stay consistent with the daily ankle routine — 5–8 minutes every morning</li>
+      <li>Do not skip warm-ups before runs or gym sessions</li>
+      <li>Ice after sessions if the ankle feels warm or swollen</li>
+    </ul>
+  </div>
+ 
+  <!-- Stats -->
   <div class="stat-grid">
     <div class="stat-card"><div class="stat-val" style="color:var(--green)">${dailyStreak}</div><div class="stat-label">Daily streak</div></div>
     <div class="stat-card"><div class="stat-val" style="color:var(--amber)">${countInjuryToday(dk)}</div><div class="stat-label">Done today</div></div>
     <div class="stat-card"><div class="stat-val" style="color:var(--blue)">${countTotalInjury()}</div><div class="stat-label">Total logged</div></div>
   </div>`;
-
+ 
   Object.entries(INJURY_GROUPS).forEach(([gid, g]) => {
     const done = g.items.filter(i => DB.injury[`${dk}_${i.id}`]).length;
     html += `<div class="sec-h">${g.label}</div>
@@ -1005,7 +1995,7 @@ function renderInjury() {
       }).join('')}
     </div>`;
   });
-
+ 
   html += `
   <div class="sec-h">Balance progression — current stage</div>
   <div class="card-sm">
@@ -1025,7 +2015,7 @@ function renderInjury() {
       </div>`;
     }).join('')}
   </div>
-
+ 
   <div class="sec-h">Warning signs — stop immediately if</div>
   <div class="alert"><strong>Ankle:</strong> Sharp pain during weight-bearing · Increasing swelling · Ankle giving way during walking · Worse morning after run two weeks running</div>
   <div class="alert"><strong>Knee:</strong> Medial pain starting during a run · Pain above 4/10 · Swelling around medial joint line · Locking or clicking · Worsening week on week</div>
@@ -1034,10 +2024,10 @@ function renderInjury() {
   </div>
   <textarea placeholder="Injury notes — ankle stiffness, knee soreness, any concerns..." oninput="saveNote('injury_notes',this.value)">${DB.notes['injury_notes']||''}</textarea>
   `;
-
+ 
   document.getElementById('sec-injury').innerHTML = html;
 }
-
+ 
 function countInjuryToday(dk) {
   return Object.keys(INJURY_GROUPS).reduce((sum,gid) =>
     sum + INJURY_GROUPS[gid].items.filter(i => DB.injury[`${dk}_${i.id}`]).length, 0);
@@ -1045,13 +2035,13 @@ function countInjuryToday(dk) {
 function countTotalInjury() {
   return Object.keys(DB.injury).filter(k => DB.injury[k]).length;
 }
-
+ 
 // ═══════════════════════════════════════════════════════════════
 // RENDER — PROGRESS
 // ═══════════════════════════════════════════════════════════════
 function renderProgress() {
   const { wi, dtr, pct } = today();
-
+ 
   // Count completed sessions
   let totalSessions = 0, completedSessions = 0;
   WEEKS.forEach((week, wIdx) => {
@@ -1067,23 +2057,27 @@ function renderProgress() {
       }
     });
   });
-
+ 
   // Latest weight
   const latestWeight = DB.weights.length > 0 ? DB.weights[DB.weights.length-1].val : '—';
-  const startWeight = 147;
-  const goalWeight = 130;
-  const weightLost = DB.weights.length > 0 ? (startWeight - parseFloat(DB.weights[DB.weights.length-1].val)).toFixed(1) : '0';
-  const weightPct = DB.weights.length > 0 ? Math.min(100, Math.max(0, (startWeight - parseFloat(DB.weights[DB.weights.length-1].val)) / (startWeight - goalWeight) * 100)) : 0;
-
-  let html = `<div style="font-size:22px;font-weight:700;letter-spacing:-0.01em;margin-bottom:16px">Progress</div>
-
+ 
+  let html = `
+  <!-- Intro banner -->
+  <div class="intro-banner">
+    Train with consistency. Eat to support the work. Adjust when needed. <strong>Do not let one imperfect moment become an off-plan week.</strong>
+  </div>
+ 
+  <div style="font-size:22px;font-weight:700;letter-spacing:-0.01em;margin-bottom:4px">Progress</div>
+  <div style="font-size:13px;color:var(--muted);margin-bottom:16px">Progress is not just the scale or one pace reading. It is the pattern of your behaviour across weeks.</div>
+ 
   <div class="stat-grid">
     <div class="stat-card"><div class="stat-val" style="color:var(--green)">${completedSessions}</div><div class="stat-label">Sessions done</div></div>
     <div class="stat-card"><div class="stat-val" style="color:var(--blue)">${wi+1}</div><div class="stat-label">Current week</div></div>
     <div class="stat-card"><div class="stat-val" style="color:var(--amber)">${dtr}</div><div class="stat-label">Days to race</div></div>
-    <div class="stat-card"><div class="stat-val" style="color:var(--coral)">${latestWeight}</div><div class="stat-label">Last weight (lb)</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:var(--muted)">${latestWeight}</div><div class="stat-label">Last weight (lb)</div></div>
   </div>
-
+ 
+  <!-- Plan progress -->
   <div class="sec-h">Plan progress</div>
   <div class="card-sm">
     <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:6px">
@@ -1094,40 +2088,79 @@ function renderProgress() {
       <span>23 Mar</span><span>6 Sep</span>
     </div>
   </div>
-  <div class="card-sm" style="margin-top:8px">
+  <div class="card-sm" style="margin-top:8px;margin-bottom:14px">
     <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:6px">
       <span>Sessions completed</span><span>${completedSessions} / ${totalSessions}</span>
     </div>
     <div class="pbar-wrap"><div class="pbar-fill" style="width:${totalSessions>0?(completedSessions/totalSessions*100).toFixed(1):0}%;background:var(--teal)"></div></div>
   </div>
-
-  <div class="sec-h">Weight progress</div>
+ 
+  <!-- What to track -->
+  <div class="sec-h">What to track</div>
   <div class="card-sm" style="margin-bottom:8px">
-    <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:6px">
-      <span>147 lb → 130 lb goal</span><span>${weightLost > 0 ? weightLost + ' lb lost' : 'Start logging'}</span>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:10px;line-height:1.6">The most useful data comes from multiple signals, not one number. Track these over time:</div>
+    <ul class="check-list">
+      <li>Completed sessions — consistency is the main metric</li>
+      <li>Long run confidence — how steady do you feel?</li>
+      <li>Quality session confidence — are the paces feeling more familiar?</li>
+      <li>Recovery — how quickly are you bouncing back between sessions?</li>
+      <li>Niggles — are they resolving, holding steady, or getting worse?</li>
+      <li>Energy and mood across the week</li>
+      <li>Pace trends over time — not day-to-day variation, but the direction of travel</li>
+    </ul>
+  </div>
+ 
+  <!-- Weight tracking -->
+  <div class="sec-h">Weight — optional tracking</div>
+  <div class="card-sm" style="margin-bottom:8px">
+    <div style="font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:12px">Weight can be tracked if it feels useful, but it is one data point among many. Day-to-day fluctuations are mostly hydration and food timing. Look at trends across 2–3 weeks, not individual readings.</div>
+    <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap">
+      <input id="wt-val2" type="number" step="0.1" placeholder="Weight in lbs" style="flex:1;min-width:120px;background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-family:inherit;font-size:14px;">
+      <button class="btn btn-green" onclick="logWeight2()">Log weight</button>
     </div>
-    <div class="pbar-wrap"><div class="pbar-fill" style="width:${weightPct.toFixed(1)}%;background:var(--amber)"></div></div>
-    <div style="display:flex;justify-content:space-between;margin-top:4px;font-size:10px;color:var(--faint)">
-      <span>147 lb</span><span>Goal: 130 lb (~mid Jul)</span>
+    <div class="weight-entries" style="max-height:200px">
+      ${DB.weights.length === 0 ? '<div style="color:var(--faint);font-size:13px;padding:8px 0">No weight entries yet</div>' :
+      [...DB.weights].reverse().map(e => `
+      <div class="weight-entry">
+        <span style="color:var(--muted);font-size:12px">${e.date}</span>
+        <span style="font-size:15px;font-weight:600">${e.val} lb</span>
+        <button class="weight-del" onclick="deleteWeight('${e.id}')">×</button>
+      </div>`).join('')}
     </div>
   </div>
-
-  <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap">
-    <input id="wt-val2" type="number" step="0.1" placeholder="Weight in lbs" style="flex:1;min-width:120px;background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-family:inherit;font-size:14px;">
-    <button class="btn btn-green" onclick="logWeight2()">Log weight</button>
+ 
+  <!-- Better markers of progress -->
+  <div class="sec-h">Better markers of progress</div>
+  <div class="card-sm" style="background:var(--green-bg);border-color:var(--green)33;margin-bottom:14px">
+    <ul class="check-list">
+      <li>Runs feel less dramatic — easier to start, easier to finish</li>
+      <li>Recovery is quicker between sessions</li>
+      <li>Hunger feels steadier and more predictable</li>
+      <li>Less panic about one missed meal or missed session</li>
+      <li>More trust in yourself and the plan</li>
+      <li>Race pace feels more familiar and less frightening</li>
+    </ul>
   </div>
-
-  <div class="weight-entries" style="max-height:250px">
-    ${DB.weights.length === 0 ? '<div style="color:var(--faint);font-size:13px;padding:8px 0">No weight entries yet — log your first one above</div>' :
-    [...DB.weights].reverse().map(e => `
-    <div class="weight-entry">
-      <span style="color:var(--muted);font-size:12px">${e.date}</span>
-      <span style="font-size:16px;font-weight:600">${e.val} lb</span>
-      <span style="font-size:12px;font-weight:500;color:${parseFloat(e.val)<=130?'var(--green)':parseFloat(e.val)<=137?'var(--amber)':'var(--coral)'}">${parseFloat(e.val)<=130?'Goal!':'→ '+(parseFloat(e.val)-130).toFixed(1)+' to go'}</span>
-      <button class="weight-del" onclick="deleteWeight('${e.id}')">×</button>
-    </div>`).join('')}
+ 
+  <!-- Weekly review -->
+  <div class="sec-h">Weekly review questions</div>
+  <div class="card-sm" style="margin-bottom:14px">
+    <ul class="check-list">
+      <li>Did I fuel my training well enough?</li>
+      <li>Did I keep easy days easy?</li>
+      <li>Did I adjust sensibly when something felt off?</li>
+      <li>Did I let one wobble become a spiral?</li>
+      <li>What felt stronger this week compared to last?</li>
+    </ul>
   </div>
-
+ 
+  <!-- Monthly reminder -->
+  <div class="card-sm" style="background:var(--purple-bg);border-color:var(--purple)33;margin-bottom:14px">
+    <div style="font-size:10px;font-weight:700;color:var(--purple);letter-spacing:.05em;text-transform:uppercase;margin-bottom:6px">Monthly reminder</div>
+    <div style="font-size:13px;line-height:1.7;color:#7A62C8;font-style:italic">You do not need to be perfect to get to sub-50. You need to be consistent enough, across enough weeks. That is different. Perfection is not available. Consistency is.</div>
+  </div>
+ 
+  <!-- Pace targets -->
   <div class="sec-h">Pace targets</div>
   <div class="card-sm">
     ${[
@@ -1143,7 +2176,7 @@ function renderProgress() {
       <span style="font-family:'DM Mono',monospace;font-size:14px;font-weight:500;color:${label==='Race target'?'var(--coral)':label==='Current fitness'?'var(--amber)':'var(--text)'}">${val}</span>
     </div>`).join('')}
   </div>
-
+ 
   <div class="sec-h">Race day strategy</div>
   <div class="card-sm" style="background:var(--coral-bg);border-color:var(--coral)33">
     ${[
@@ -1158,11 +2191,14 @@ function renderProgress() {
       <span style="font-size:12px;color:#C05030;opacity:.9">${n}</span>
     </div>`).join('')}
   </div>
+ 
+  <div class="sec-h">Progress notes</div>
+  <textarea placeholder="Reflections · How sessions felt · Pace notes · Energy · What to adjust..." oninput="saveNote('progress_notes',this.value)">${DB.notes['progress_notes']||''}</textarea>
   `;
-
+ 
   document.getElementById('sec-progress').innerHTML = html;
 }
-
+ 
 // ═══════════════════════════════════════════════════════════════
 // ACTIONS
 // ═══════════════════════════════════════════════════════════════
@@ -1178,14 +2214,11 @@ function toggleSessionByDate(dk, checked) {
 function toggleInjury(dk, itemId, gid, checked) {
   DB.injury[`${dk}_${itemId}`] = checked;
   saveField('injury');
-  // Update row styling
   const row = document.getElementById(`cbrow_${dk}_${itemId}`) || document.getElementById(`inj_${dk}_${itemId}`);
   if (row) row.classList.toggle('done', checked);
-  // Update counts
   const g = INJURY_GROUPS[gid];
   if (!g) return;
   const done = g.items.filter(i => DB.injury[`${dk}_${i.id}`]).length;
-  // find count elements
   document.querySelectorAll(`[data-count="${gid}"]`).forEach(el => {
     el.textContent = `${done}/${g.items.length}`;
     el.style.color = done === g.items.length ? 'var(--green)' : 'var(--amber)';
@@ -1247,15 +2280,133 @@ function logWeight2() {
 function deleteWeight(id) {
   DB.weights = DB.weights.filter(w => w.id !== id);
   saveField('weights');
-  // Re-render whichever section is visible
+  const activeId = document.querySelector('.section.active')?.id?.replace('sec-','');
+  if (activeId && renders[activeId]) renders[activeId]();
+}
+function toggleShopItem(wi, itemId, checked) {
+  const k = `shop_w${wi}_${itemId}`;
+  if (!DB.shop) DB.shop = {};
+  DB.shop[k] = checked;
+  saveField('shop');
+  const row = document.getElementById(`shop_${wi}_${itemId}`);
+  if (row) row.classList.toggle('done', checked);
+}
+function clearShopList(wi) {
+  if (!DB.shop) return;
+  const prefix = `shop_w${wi}_`;
+  Object.keys(DB.shop).forEach(k => { if (k.startsWith(prefix)) delete DB.shop[k]; });
+  saveField('shop');
+  // Re-render whichever section is active
   const activeId = document.querySelector('.section.active')?.id?.replace('sec-','');
   if (activeId && renders[activeId]) renders[activeId]();
 }
 function openDayDetail(i) {
-  // Navigate to plan and show week detail
   nav('plan');
 }
-
+ 
+// ═══════════════════════════════════════════════════════════════
+// SESSION OVERRIDE MODAL
+// ═══════════════════════════════════════════════════════════════
+let _omState = { wi: 0, di: 0, selectedType: null, swapWith: null, source: 'today' };
+ 
+function openOverrideModal(wi, di, source) {
+  _omState = { wi, di, selectedType: null, swapWith: null, source };
+  const s = WEEKS[wi].days[di]; // original
+  const ov = DB.overrides[`ov_${wi}_${di}`];
+ 
+  // Set titles
+  const dayLabels = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+  document.getElementById('om-title').textContent = `Adjust ${dayLabels[di]}`;
+  document.getElementById('om-sub').textContent = `Original: ${s.t === 'gym' ? (s.gym || 'Gym') : s.t.charAt(0).toUpperCase() + s.t.slice(1)}${s.d ? ' — ' + s.d : ''}`;
+ 
+  // Highlight current type
+  document.querySelectorAll('.session-type-btn').forEach(b => b.classList.remove('selected'));
+ 
+  // Show existing override if any
+  const existingDiv = document.getElementById('om-existing-override');
+  if (ov) {
+    existingDiv.style.display = 'block';
+    const ovLabel = ov.type === 'skipped' ? 'Skipped' : ov.type === 'deferred' ? 'Deferred' : `Changed to ${ov.session.t}`;
+    document.getElementById('om-existing-text').textContent = `Current override: ${ovLabel}${ov.persist ? ' (saved permanently)' : ' (today only)'}`;
+  } else {
+    existingDiv.style.display = 'none';
+  }
+ 
+  // Reset persist checkbox
+  document.getElementById('om-persist').checked = ov ? ov.persist : false;
+ 
+  // Build swap grid
+  const grid = document.getElementById('om-swap-grid');
+  grid.innerHTML = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map((d, i) => {
+    if (i === di) return `<div style="background:var(--border);border-radius:7px;padding:6px 4px;text-align:center;font-size:10px;color:var(--faint)">${d}<br>—</div>`;
+    const other = WEEKS[wi].days[i];
+    return `<div onclick="selectSwapDay(${i})" id="om-swap-${i}" style="background:var(--card2);border:1px solid var(--border);border-radius:7px;padding:6px 4px;text-align:center;font-size:10px;color:var(--muted);cursor:pointer">${d}<br><span style="font-size:9px">${other.t}</span></div>`;
+  }).join('');
+ 
+  document.getElementById('override-modal').classList.remove('hidden');
+}
+ 
+function selectOverrideType(type) {
+  _omState.selectedType = type;
+  _omState.swapWith = null; // clear swap when picking a type
+  document.querySelectorAll('.session-type-btn').forEach(b => {
+    b.classList.toggle('selected', b.textContent.toLowerCase().replace(' / off','').replace(' run','') === type || b.textContent.toLowerCase() === type);
+  });
+  document.querySelectorAll('[id^="om-swap-"]').forEach(el => el.style.borderColor = 'var(--border)');
+}
+ 
+function selectSwapDay(di) {
+  _omState.swapWith = di;
+  _omState.selectedType = null;
+  document.querySelectorAll('.session-type-btn').forEach(b => b.classList.remove('selected'));
+  ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].forEach((_, i) => {
+    const el = document.getElementById('om-swap-'+i);
+    if (el) el.style.borderColor = i === di ? 'var(--amber)' : 'var(--border)';
+  });
+  document.getElementById('om-swap-hint').textContent = `Will swap ${['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][_omState.di]} ↔ ${['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][di]}`;
+}
+ 
+function applyOverride() {
+  const { wi, di, selectedType, swapWith } = _omState;
+  const persist = document.getElementById('om-persist').checked;
+  const dk = dateKey();
+ 
+  if (swapWith !== null) {
+    // Swap two days
+    const sessA = WEEKS[wi].days[di];
+    const sessB = WEEKS[wi].days[swapWith];
+    DB.overrides[`ov_${wi}_${di}`]       = { session: { t: sessB.t, d: sessB.d, gym: sessB.gym }, type: 'swap', persist, date: dk };
+    DB.overrides[`ov_${wi}_${swapWith}`] = { session: { t: sessA.t, d: sessA.d, gym: sessA.gym }, type: 'swap', persist, date: dk };
+  } else if (selectedType) {
+    if (selectedType === 'skipped' || selectedType === 'deferred') {
+      DB.overrides[`ov_${wi}_${di}`] = { session: { t: 'rest', d: '' }, type: selectedType, persist, date: dk };
+    } else {
+      DB.overrides[`ov_${wi}_${di}`] = { session: { t: selectedType, d: '' }, type: 'changed', persist, date: dk };
+    }
+  } else {
+    closeOverrideModal();
+    return;
+  }
+ 
+  saveField('overrides');
+  closeOverrideModal();
+  if (_omState.source === 'today') renders.today();
+  else renders.week();
+}
+ 
+function clearOverride() {
+  const { wi, di } = _omState;
+  delete DB.overrides[`ov_${wi}_${di}`];
+  saveField('overrides');
+  closeOverrideModal();
+  renders[_omState.source === 'today' ? 'today' : 'week']();
+}
+ 
+function closeOverrideModal(e) {
+  if (e && e.target !== document.getElementById('override-modal')) return;
+  document.getElementById('override-modal').classList.add('hidden');
+}
+ 
 // ═══════════════════════════════════════════════════════════════
 // RENDER MAP
 // ═══════════════════════════════════════════════════════════════
@@ -1267,7 +2418,7 @@ const renders = {
   injury:   renderInjury,
   progress: renderProgress,
 };
-
+ 
 // ═══════════════════════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════════════════════
